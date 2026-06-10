@@ -35,6 +35,7 @@ return [
             'desc' => 'Giải pháp tối ưu và tiết kiệm cho blog, tool và học tập.',
             'badge' => 'Tiết kiệm',
             'price_per_month' => 49999,
+            'cores' => 1, 'ram' => 1, 'disk' => 20, 'transfer_tb' => 'Unlimited',
         ],
         'nova-basic' => [
             'provider_id' => 'sn-1-2-25',
@@ -42,6 +43,7 @@ return [
             'desc' => 'Phổ thông cho panel, bot và website vừa và nhỏ.',
             'badge' => null,
             'price_per_month' => 64900,
+            'cores' => 1, 'ram' => 2, 'disk' => 25, 'transfer_tb' => 'Unlimited',
         ],
         'nova-standard' => [
             'provider_id' => 'sn-2-4-30',
@@ -49,6 +51,7 @@ return [
             'desc' => 'Hiệu năng ổn định cho các ứng dụng có lượng truy cập tầm trung.',
             'badge' => null,
             'price_per_month' => 119000,
+            'cores' => 2, 'ram' => 4, 'disk' => 30, 'transfer_tb' => 'Unlimited',
         ],
         'nova-pro' => [
             'provider_id' => 'sn-4-8-50',
@@ -56,6 +59,7 @@ return [
             'desc' => 'Dành cho doanh nghiệp và website thương mại điện tử nhỏ.',
             'badge' => 'Phổ biến',
             'price_per_month' => 219000,
+            'cores' => 4, 'ram' => 8, 'disk' => 50, 'transfer_tb' => 'Unlimited',
         ],
         'nova-premium' => [
             'provider_id' => 'sn-8-16-70',
@@ -63,6 +67,7 @@ return [
             'desc' => 'Sức mạnh vượt trội để xử lý cơ sở dữ liệu và app phức tạp.',
             'badge' => 'Cao cấp',
             'price_per_month' => 389000,
+            'cores' => 8, 'ram' => 16, 'disk' => 70, 'transfer_tb' => 'Unlimited',
         ],
         'nova-vip' => [
             'provider_id' => 'sn-16-32-100',
@@ -70,6 +75,7 @@ return [
             'desc' => 'Dành cho dự án siêu khủng, chịu tải cao liên tục.',
             'badge' => 'V.I.P',
             'price_per_month' => 749000,
+            'cores' => 16, 'ram' => 32, 'disk' => 100, 'transfer_tb' => 'Unlimited',
         ],
     ],
 
