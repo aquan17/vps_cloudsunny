@@ -197,7 +197,7 @@
                     </button>
                 </form>
                 
-                @if(strtolower($vps->status) === 'đã tắt' || strtolower($vps->status) === 'offline' || strtolower($vps->status) === 'tắt')
+                @if(in_array($vps->status, ['Đã tắt', 'Offline', 'Tắt', 'đã tắt', 'offline', 'tắt']))
                 <form method="POST" action="{{ route('dashboard.boot', $vps) }}" class="flex-1" data-confirm="Bật nguồn VPS?">
                     @csrf
                     <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-green-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors group">
