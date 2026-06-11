@@ -65,4 +65,27 @@ class VpsInstance extends Model
         }
         return 'badge-warning';
     }
+
+    protected static function booted()
+    {
+        static::updated(function (VpsInstance $vps) {
+            if ($vps->status === 'Sẵn sàng' && $vps->public_ip && $vps->root_password) {
+                $cacheKey = "vps_welcome_email_sent_{$vps->id}";
+                
+                if (!\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($vps->user->email)->queue(
+                            new \App\Mail\VpsCreated($vps, (string) $vps->root_password)
+                        );
+                        \Illuminate\Support\Facades\Cache::forever($cacheKey, true);
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::error('Failed to send VPS welcome email', [
+                            'vps_id' => $vps->id, 
+                            'msg' => $e->getMessage()
+                        ]);
+                    }
+                }
+            }
+        });
+    }
 }

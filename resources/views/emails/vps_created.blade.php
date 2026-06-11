@@ -53,7 +53,7 @@
                 </table>
 
                 <div class="notice">
-                    <strong>⏳ Trạng thái máy chủ:</strong> Quá trình cài đặt hệ điều hành đang diễn ra ở chế độ nền. <strong>Vui lòng đợi thêm 2-3 phút</strong> để VPS khởi động hoàn tất trước khi bạn có thể Ping hoặc SSH vào máy chủ.
+                    <strong>✅ Trạng thái máy chủ:</strong> Quá trình cài đặt hệ điều hành đã hoàn tất. VPS của bạn đã <strong>sẵn sàng để sử dụng ngay bây giờ</strong>.
                 </div>
 
                 <div class="warning">

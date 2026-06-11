@@ -167,11 +167,7 @@ class StoreController extends Controller
             return redirect()->route('dashboard')->with('error', 'Tạo VPS thất bại, đã hoàn tiền: ' . $e->getMessage());
         }
 
-        try {
-            Mail::to($user->email)->queue(new VpsCreated($vps, (string) $vps->root_password));
-        } catch (\Throwable $e) {
-            Log::error('Failed to send VPS created email', ['vps_id' => $vps->id, 'msg' => $e->getMessage()]);
-        }
+        // Email is now handled by VpsInstance Model event once the IP and password are fully provisioned.
 
         return redirect()->route('dashboard.show', $vps)->with('success', 'VPS đã được tạo thành công. Thông tin đăng nhập sẽ được cập nhật khi VPS sẵn sàng.');
     }
