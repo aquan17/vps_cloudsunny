@@ -17,7 +17,7 @@
                 $statusLower = mb_strtolower($vps->status, 'UTF-8');
                 $isOk = str_contains($statusLower, 'running') || str_contains($statusLower, 'hoạt động') || str_contains($statusLower, 'sẵn sàng');
                 $isErr = str_contains($statusLower, 'lỗi') || str_contains($statusLower, 'offline') || str_contains($statusLower, 'đã tắt');
-                $isWindows = ($vps->root_password === 'Anhyeuem@');
+                $osLabel = $vps->provider_payload['os'] ?? config("cloudsunny.images.{$vps->provider_os_id}.label", 'Ubuntu / Linux');
             @endphp
             <span id="vps-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {{ $isOk ? 'bg-green-50 text-green-700 border border-green-200' : ($isErr ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-yellow-50 text-yellow-700 border border-yellow-200') }}">
                 <span class="w-1.5 h-1.5 rounded-full {{ $isOk ? 'bg-green-500' : ($isErr ? 'bg-red-500' : 'bg-yellow-500') }}"></span>
@@ -25,7 +25,7 @@
             </span>
             <span class="text-gray-500">{{ $vps->region ?? 'Không rõ' }}</span>
             <span class="text-gray-300">•</span>
-            <span class="text-gray-500">{{ $isWindows ? 'Windows Server 2012' : 'Ubuntu / Linux' }}</span>
+            <span class="text-gray-500">{{ $osLabel }}</span>
             
             <span id="polling-indicator" style="display:none;" class="items-center gap-1.5 text-cloud-600 font-medium ml-2">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
