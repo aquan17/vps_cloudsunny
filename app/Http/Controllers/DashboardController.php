@@ -53,9 +53,17 @@ class DashboardController extends Controller
 
         $osList = config('cloudsunny.images', []);
         try {
+            $productId = null;
             if ($plan && isset($plan['product_id'])) {
-                // Use cached method from pricing service instead of hitting API directly
-                $apiOs = $pricing->getImages((int) $plan['product_id']);
+                $productId = (int) $plan['product_id'];
+            } elseif ($vps->provider_product_id) {
+                $productId = (int) $vps->provider_product_id;
+            } else {
+                $productId = 1; // Fallback to default VPS product ID to ensure we get the full OS list
+            }
+            
+            if ($productId) {
+                $apiOs = $pricing->getImages($productId);
                 if (is_array($apiOs) && !empty($apiOs)) {
                     $osList = $apiOs;
                 }
