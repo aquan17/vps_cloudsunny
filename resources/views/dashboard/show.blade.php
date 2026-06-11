@@ -165,13 +165,7 @@
             <p class="text-sm text-gray-600 mb-6">Các thao tác ở đây sẽ phá hủy dữ liệu và không thể khôi phục dễ dàng. Cần hết sức cẩn thận.</p>
             
             <div class="flex flex-col sm:flex-row gap-4">
-                <form method="POST" action="{{ route('dashboard.rebuild', $vps) }}" class="flex-1" data-confirm="⚠️ REBUILD sẽ XÓA TOÀN BỘ DỮ LIỆU. Xác nhận?">
-                    @csrf
-                    <button type="submit" class="w-full flex justify-center items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-md bg-white hover:bg-gray-50 text-gray-700 font-medium text-sm transition-colors shadow-sm">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.014a4.514 4.514 0 011.513 1.036m-5.106-.233L4 3.339m8.583 6.551l-3.33-3.33m-1.228 3.518L6.87 8.92" /></svg>
-                        Rebuild OS
-                    </button>
-                </form>
+                <!-- Rebuild OS moved to right sidebar -->
                 
                 <form method="POST" action="{{ route('dashboard.destroy', $vps) }}" class="flex-1" data-confirm="🗑️ Xóa VPS này? Hành động này KHÔNG THỂ hoàn tác.">
                     @csrf @method('DELETE')
@@ -194,28 +188,55 @@
                 <h3 class="text-sm font-semibold text-gray-900">Quản lý nguồn</h3>
             </div>
             
-            <div class="p-4 grid grid-cols-3 gap-3">
-                <form method="POST" action="{{ route('dashboard.boot', $vps) }}" class="w-full" data-confirm="Bật nguồn VPS?">
+            <div class="p-4 flex gap-3">
+                <form method="POST" action="{{ route('dashboard.reboot', $vps) }}" class="flex-1" data-confirm="Khởi động lại VPS?">
                     @csrf
-                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors group">
-                        <svg class="text-gray-400 group-hover:text-cloud-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>
-                        <span class="text-xs font-medium text-gray-700 group-hover:text-cloud-700">Boot</span>
-                    </button>
-                </form>
-                
-                <form method="POST" action="{{ route('dashboard.reboot', $vps) }}" class="w-full" data-confirm="Khởi động lại VPS?">
-                    @csrf
-                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors group">
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors group">
                         <svg class="text-gray-400 group-hover:text-cloud-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-                        <span class="text-xs font-medium text-gray-700 group-hover:text-cloud-700">Reboot</span>
+                        <span class="text-sm font-medium text-gray-700 group-hover:text-cloud-700">Reset</span>
                     </button>
                 </form>
                 
-                <form method="POST" action="{{ route('dashboard.shutdown', $vps) }}" class="w-full" data-confirm="Tắt nguồn VPS?">
+                @if(strtolower($vps->status) === 'đã tắt' || strtolower($vps->status) === 'offline' || strtolower($vps->status) === 'tắt')
+                <form method="POST" action="{{ route('dashboard.boot', $vps) }}" class="flex-1" data-confirm="Bật nguồn VPS?">
                     @csrf
-                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-red-100 bg-red-50/50 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors group">
-                        <svg class="text-red-500" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z" /></svg>
-                        <span class="text-xs font-medium text-red-700">Shutdown</span>
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-green-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors group">
+                        <svg class="text-green-500 group-hover:text-green-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>
+                        <span class="text-sm font-medium text-green-700 group-hover:text-green-800">Bật nguồn</span>
+                    </button>
+                </form>
+                @else
+                <form method="POST" action="{{ route('dashboard.shutdown', $vps) }}" class="flex-1" data-confirm="Tắt nguồn VPS?">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 border border-red-200 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors group">
+                        <svg class="text-red-500 group-hover:text-red-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z" /></svg>
+                        <span class="text-sm font-medium text-red-700 group-hover:text-red-800">Tắt nguồn</span>
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+        
+        {{-- Rebuild OS Card --}}
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                <h3 class="text-sm font-semibold text-gray-900">Cài lại hệ điều hành (Rebuild)</h3>
+            </div>
+            <div class="p-4">
+                <p class="text-xs text-red-600 mb-4 font-medium">⚠️ Cảnh báo: Toàn bộ dữ liệu trên ổ cứng sẽ bị xóa sạch.</p>
+                <form method="POST" action="{{ route('dashboard.rebuild', $vps) }}" data-confirm="XÁC NHẬN: Cài lại HĐH sẽ xóa toàn bộ dữ liệu hiện tại của VPS. Bạn chắc chắn chứ?">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Chọn Hệ điều hành mới</label>
+                        <select name="os_id" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600" required>
+                            <option value="">-- Chọn HĐH --</option>
+                            @foreach($osList as $osId => $osData)
+                                <option value="{{ $osId }}">{{ is_array($osData) ? ($osData['icon'] ?? '') . ' ' . ($osData['label'] ?? 'Unknown') : $osData }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-medium py-2 px-4 rounded-md transition-colors text-sm">
+                        Tiến hành Rebuild
                     </button>
                 </form>
             </div>
