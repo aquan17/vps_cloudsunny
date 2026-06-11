@@ -78,7 +78,7 @@ class CloudSunnyAccountController extends Controller
             return back()->with('error', 'Đã lưu account nhưng đồng bộ thất bại: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Đã thêm account NovaCloud thành công.');
+        return back()->with('success', 'Đã thêm account SeaServer thành công.');
     }
 
     public function sync(CloudSunnyAccount $account, CloudSunnyApiService $api, CloudSunnyAccountSyncService $sync)
@@ -86,7 +86,7 @@ class CloudSunnyAccountController extends Controller
         try {
             $sync->sync($account, $api);
 
-            return back()->with('success', 'Đồng bộ NovaCloud account thành công.');
+            return back()->with('success', 'Đồng bộ SeaServer account thành công.');
         } catch (\Throwable $e) {
             $account->sync_error = $e->getMessage();
             $account->save();
@@ -162,7 +162,7 @@ class CloudSunnyAccountController extends Controller
 
         $account->save();
 
-        return redirect()->route('admin.accounts.index')->with('success', 'Đã cập nhật account NovaCloud.');
+        return redirect()->route('admin.accounts.index')->with('success', 'Đã cập nhật account SeaServer.');
     }
 
     public function destroy(CloudSunnyAccount $account)

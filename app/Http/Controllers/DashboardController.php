@@ -304,7 +304,7 @@ class DashboardController extends Controller
     {
         $this->authorizeVps($vps);
 
-        return back()->with('error', 'NovaCloud API docs hiện tại chưa có endpoint đổi mật khẩu VPS.');
+        return back()->with('error', 'SeaServer API docs hiện tại chưa có endpoint đổi mật khẩu VPS.');
     }
 
     public function rebuild(Request $request, VpsInstance $vps, CloudSunnyApiService $api)
@@ -363,7 +363,7 @@ class DashboardController extends Controller
     private function requireCloudSunnyLink(VpsInstance $vps): void
     {
         if (!$vps->cloudSunnyAccount || !$vps->provider_vps_id) {
-            abort(400, 'VPS chưa liên kết NovaCloud API.');
+            abort(400, 'VPS chưa liên kết SeaServer API.');
         }
     }
 

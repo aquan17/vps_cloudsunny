@@ -37,7 +37,7 @@ class CloudSunnyApiService
         $secret = $this->account ? $this->account->api_secret : config('cloudsunny.api_secret');
 
         if (!$username || !$app || !$secret) {
-            throw new RuntimeException('NovaCloud API credentials are not configured.');
+            throw new RuntimeException('SeaServer API credentials are not configured.');
         }
 
         $data = $this->postPublic('/agency/get-access-token', [
@@ -261,10 +261,10 @@ class CloudSunnyApiService
                 return $json['data'] ?? [];
             }
 
-            throw new RuntimeException($json['message'] ?? $json['msg'] ?? 'NovaCloud API returned an error.');
+            throw new RuntimeException($json['message'] ?? $json['msg'] ?? 'SeaServer API returned an error.');
         }
 
-        throw new RuntimeException($json['message'] ?? $json['msg'] ?? 'NovaCloud API error (HTTP ' . $response->status() . ')');
+        throw new RuntimeException($json['message'] ?? $json['msg'] ?? 'SeaServer API error (HTTP ' . $response->status() . ')');
     }
 
     private function url(string $path): string
