@@ -47,6 +47,7 @@ class DashboardController extends Controller
                     'label' => $meta['label'],
                     'months' => $meta['months'],
                     'price' => $pricing->calculatePrice($plan, $cycle),
+                    'discount_percent' => $meta['discount_percent'] ?? 0,
                 ];
             }
         }

@@ -164,16 +164,39 @@
             
             <p class="text-sm text-gray-600 mb-6">Các thao tác ở đây sẽ phá hủy dữ liệu và không thể khôi phục dễ dàng. Cần hết sức cẩn thận.</p>
             
-            <div class="flex flex-col sm:flex-row gap-4">
-                <!-- Rebuild OS moved to right sidebar -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Rebuild OS Block -->
+                <div class="bg-white rounded-lg p-4 border border-red-100 shadow-sm">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-2">Cài lại hệ điều hành (Rebuild)</h3>
+                    <p class="text-xs text-gray-500 mb-4">Toàn bộ dữ liệu trên ổ cứng sẽ bị xóa sạch.</p>
+                    <form method="POST" action="{{ route('dashboard.rebuild', $vps) }}" data-confirm="XÁC NHẬN: Cài lại HĐH sẽ xóa toàn bộ dữ liệu hiện tại của VPS. Bạn chắc chắn chứ?">
+                        @csrf
+                        <div class="mb-3">
+                            <select name="os_id" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500" required>
+                                <option value="">-- Chọn HĐH mới --</option>
+                                @foreach($osList as $osId => $osData)
+                                    <option value="{{ $osId }}">{{ is_array($osData) ? ($osData['icon'] ?? '') . ' ' . ($osData['label'] ?? 'Unknown') : $osData }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-medium py-2 px-4 rounded-md transition-colors text-sm">
+                            Tiến hành Rebuild
+                        </button>
+                    </form>
+                </div>
                 
-                <form method="POST" action="{{ route('dashboard.destroy', $vps) }}" class="flex-1" data-confirm="🗑️ Xóa VPS này? Hành động này KHÔNG THỂ hoàn tác.">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="w-full flex justify-center items-center gap-2 px-4 py-2.5 border border-transparent rounded-md bg-red-600 hover:bg-red-700 text-white font-medium text-sm transition-colors shadow-sm">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
-                        Xóa VPS
-                    </button>
-                </form>
+                <!-- Delete VPS Block -->
+                <div class="bg-white rounded-lg p-4 border border-red-100 shadow-sm flex flex-col justify-center items-center text-center">
+                    <h3 class="text-sm font-semibold text-gray-900 mb-2">Hủy VPS vĩnh viễn</h3>
+                    <p class="text-xs text-gray-500 mb-4">Mọi dữ liệu và địa chỉ IP sẽ bị thu hồi ngay lập tức.</p>
+                    <form method="POST" action="{{ route('dashboard.destroy', $vps) }}" class="w-full" data-confirm="🗑️ Xóa VPS này? Hành động này KHÔNG THỂ hoàn tác.">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="w-full flex justify-center items-center gap-2 px-4 py-2 border border-transparent rounded-md bg-red-600 hover:bg-red-700 text-white font-medium text-sm transition-colors shadow-sm">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                            Xóa VPS
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         
@@ -217,30 +240,7 @@
             </div>
         </div>
         
-        {{-- Rebuild OS Card --}}
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                <h3 class="text-sm font-semibold text-gray-900">Cài lại hệ điều hành (Rebuild)</h3>
-            </div>
-            <div class="p-4">
-                <p class="text-xs text-red-600 mb-4 font-medium">⚠️ Cảnh báo: Toàn bộ dữ liệu trên ổ cứng sẽ bị xóa sạch.</p>
-                <form method="POST" action="{{ route('dashboard.rebuild', $vps) }}" data-confirm="XÁC NHẬN: Cài lại HĐH sẽ xóa toàn bộ dữ liệu hiện tại của VPS. Bạn chắc chắn chứ?">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-xs font-medium text-gray-700 mb-1">Chọn Hệ điều hành mới</label>
-                        <select name="os_id" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600" required>
-                            <option value="">-- Chọn HĐH --</option>
-                            @foreach($osList as $osId => $osData)
-                                <option value="{{ $osId }}">{{ is_array($osData) ? ($osData['icon'] ?? '') . ' ' . ($osData['label'] ?? 'Unknown') : $osData }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-medium py-2 px-4 rounded-md transition-colors text-sm">
-                        Tiến hành Rebuild
-                    </button>
-                </form>
-            </div>
-        </div>
+        {{-- Rebuild OS Card (Moved to Danger Zone) --}}
         
         {{-- Upgrade Configuration Card --}}
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
@@ -252,17 +252,18 @@
                 <form method="POST" action="{{ route('dashboard.upgrade', $vps) }}" data-confirm="Nâng cấp VPS? Tiến trình sẽ khởi động lại máy chủ và trừ phí vào số dư.">
                     @csrf
                     <div class="space-y-3 mb-4">
+                        <div id="upgrade-data" data-days="{{ $daysRemaining }}"></div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm CPU ({{ number_format($addonPrices['cpu_monthly'] ?? 22000) }}đ/Core)</label>
-                            <input type="number" name="addon_cpu" min="0" max="16" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                            <input type="number" name="addon_cpu" min="0" max="16" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['cpu_monthly'] ?? 22000 }}">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm RAM ({{ number_format($addonPrices['ram_monthly'] ?? 22000) }}đ/GB)</label>
-                            <input type="number" name="addon_ram" min="0" max="64" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                            <input type="number" name="addon_ram" min="0" max="64" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['ram_monthly'] ?? 22000 }}">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm Ổ cứng ({{ number_format($addonPrices['disk_10gb_monthly'] ?? 10000) }}đ/10GB)</label>
-                            <select name="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                            <select name="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['disk_10gb_monthly'] ?? 10000 }}">
                                 <option value="0">Không thêm</option>
                                 <option value="10">+10 GB</option>
                                 <option value="20">+20 GB</option>
@@ -272,6 +273,11 @@
                             </select>
                         </div>
                     </div>
+                    <div class="flex justify-between items-center mb-3 text-sm">
+                        <span class="text-gray-600">Phí nâng cấp:</span>
+                        <span class="font-bold text-cloud-600" id="upgrade-total-price">0đ</span>
+                    </div>
+                    <p class="text-xs text-cloud-600 mb-4">* Tính toán dự kiến cho {{ $daysRemaining }} ngày còn lại của gói VPS.</p>
                     <button type="submit" class="w-full bg-cloud-600 hover:bg-cloud-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm shadow-sm">
                         Nâng cấp ngay
                     </button>
@@ -291,11 +297,17 @@
                         <label class="block text-xs font-medium text-gray-700 mb-1">Chọn chu kỳ gia hạn</label>
                         <select name="billing_cycle" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600" required>
                             @foreach($renewPrices as $cycle => $data)
-                                <option value="{{ $cycle }}">{{ $data['label'] }} - {{ number_format($data['price']) }}đ</option>
+                                <option value="{{ $cycle }}">
+                                    {{ $data['label'] }} 
+                                    @if(($data['discount_percent'] ?? 0) > 0)
+                                    (Giảm {{ $data['discount_percent'] }}%)
+                                    @endif
+                                    - {{ number_format($data['price']) }}đ
+                                </option>
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm shadow-sm">
+                    <button type="submit" class="w-full bg-cloud-600 hover:bg-cloud-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm shadow-sm">
                         Thanh toán gia hạn
                     </button>
                 </form>
@@ -309,7 +321,48 @@
 
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tự động tính giá Nâng cấp VPS
+    const upgradeInputs = document.querySelectorAll('.upgrade-input');
+    if (upgradeInputs.length > 0) {
+        const upgradeData = document.getElementById('upgrade-data');
+        const daysRemaining = upgradeData ? (parseInt(upgradeData.dataset.days) || 30) : 30;
+        const priceDisplay = document.getElementById('upgrade-total-price');
+        
+        function calculateUpgradeCost() {
+            let totalPerMonth = 0;
+            
+            // Lấy giá trị CPU
+            const cpuInput = document.querySelector('input[name="addon_cpu"]');
+            const cpuVal = parseInt(cpuInput.value) || 0;
+            const cpuPrice = parseInt(cpuInput.dataset.price) || 22000;
+            totalPerMonth += cpuVal * cpuPrice;
+            
+            // Lấy giá trị RAM
+            const ramInput = document.querySelector('input[name="addon_ram"]');
+            const ramVal = parseInt(ramInput.value) || 0;
+            const ramPrice = parseInt(ramInput.dataset.price) || 22000;
+            totalPerMonth += ramVal * ramPrice;
+            
+            // Lấy giá trị Disk (tính theo cục 10GB)
+            const diskInput = document.querySelector('select[name="addon_disk"]');
+            const diskVal = parseInt(diskInput.value) || 0;
+            const diskPrice = parseInt(diskInput.dataset.price) || 10000;
+            totalPerMonth += (diskVal / 10) * diskPrice;
+            
+            // Tính số tiền thực tế dựa trên số ngày còn lại
+            const prorated = Math.ceil((totalPerMonth * daysRemaining) / 30);
+            
+            // Hiển thị
+            priceDisplay.innerText = new Intl.NumberFormat('vi-VN').format(prorated) + 'đ';
+        }
 
+        upgradeInputs.forEach(input => {
+            input.addEventListener('change', calculateUpgradeCost);
+            input.addEventListener('keyup', calculateUpgradeCost);
+        });
+    }
+});
 
 function copyText(text, btn) {
     const successIcon = '<svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
