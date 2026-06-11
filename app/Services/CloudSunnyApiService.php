@@ -216,6 +216,12 @@ class CloudSunnyApiService
             ->asJson()
             ->timeout(60);
 
+        \Illuminate\Support\Facades\Log::info('API Request Payload', [
+            'method' => $method,
+            'url' => $this->url($path),
+            'data' => $data,
+        ]);
+
         $response = $method === 'get'
             ? $pending->withBody(json_encode($data), 'application/json')->get($this->url($path))
             : $pending->post($this->url($path), $data);
