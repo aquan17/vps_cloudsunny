@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Nạp tiền & Thanh toán — NovaCloud')
+@section('title', 'Nạp tiền & Thanh toán — SeaServer')
 
 @section('breadcrumbs')
     <span>Nạp tiền & Thanh toán</span>

@@ -1,5 +1,5 @@
 @extends('layouts.landing')
-@section('title', 'NovaCloud — Infrastructure for the next generation')
+@section('title', 'SeaServer — Infrastructure for the next generation')
 
 @section('content')
 
@@ -45,7 +45,7 @@
                             <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
                             <div class="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
-                        <div class="mx-auto text-[11px] font-mono text-gray-400">root@NovaCloud:~</div>
+                        <div class="mx-auto text-[11px] font-mono text-gray-400">root@SeaServer:~</div>
                     </div>
                     <div class="p-6 font-mono text-sm leading-relaxed text-gray-300 min-h-[250px] relative" id="terminal-body">
                         <div id="term-content"></div>
@@ -64,9 +64,9 @@
                             
                             const commands = [
                                 {
-                                    cmd: "ssh root@NovaCloud-sg1",
+                                    cmd: "ssh root@SeaServer-sg1",
                                     out: `<div class="text-gray-500 mb-1">Authenticating with public key...</div>
-                                          <div class="text-gray-100 mb-1">Welcome to NovaCloud Linux 22.04 LTS</div>
+                                          <div class="text-gray-100 mb-1">Welcome to SeaServer Linux 22.04 LTS</div>
                                           <div class="text-gray-400 mb-2">System load: 0.01  Memory: 4%</div>`
                                 },
                                 {
@@ -170,7 +170,7 @@
 <section class="py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Tại sao chọn NovaCloud?</h2>
+            <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Tại sao chọn SeaServer?</h2>
             <p class="mt-4 text-lg text-gray-600">Những lợi thế khác biệt dành riêng cho bạn.</p>
         </div>
         

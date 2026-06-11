@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
-    <title>@yield('title', 'NovaCloud — Infrastructure for the next generation')</title>
+    <title>@yield('title', 'SeaServer — Infrastructure for the next generation')</title>
     <meta name="description" content="@yield('meta', 'Hạ tầng Cloud hiệu năng cao, tối ưu cho tốc độ và độ ổn định. Triển khai toàn cầu trong vài giây với thanh toán VNĐ linh hoạt.')">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +57,7 @@
                         <div class="w-8 h-8 rounded-lg bg-cloud-600 flex items-center justify-center text-white shadow-sm group-hover:bg-cloud-700 transition-colors">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
                         </div>
-                        <span class="text-lg font-bold text-gray-900 tracking-tight">NovaCloud</span>
+                        <span class="text-lg font-bold text-gray-900 tracking-tight">SeaServer</span>
                     </a>
                     
                     <nav class="hidden md:flex gap-6">
@@ -100,7 +100,7 @@
             <div class="md:flex md:items-center md:justify-between flex-col md:flex-row gap-6">
                 <div class="flex justify-center md:justify-start">
                     <p class="text-xs text-gray-500 font-medium">
-                        &copy; {{ date('Y') }} NovaCloud Infrastructure. Bản quyền đã được bảo hộ.
+                        &copy; {{ date('Y') }} SeaServer Infrastructure. Bản quyền đã được bảo hộ.
                     </p>
                 </div>
                 <div class="flex justify-center gap-6">

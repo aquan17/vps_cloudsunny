@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tạo VPS ' . $plan['name'] . ' - NovaCloud')
+@section('title', 'Tạo VPS ' . $plan['name'] . ' - SeaServer')
 
 @section('breadcrumbs')
     <a href="{{ route('pricing') }}" class="hover:text-gray-900 transition-colors">Bảng giá</a>
@@ -28,7 +28,7 @@
     <div class="text-center bg-white p-8 rounded-xl shadow-2xl border border-gray-100 max-w-sm w-full mx-4">
         <div class="w-16 h-16 mx-auto mb-5 rounded-full border-4 border-cloud-100 border-t-cloud-600 animate-spin"></div>
         <h3 class="text-xl font-bold text-gray-900 mb-2">Đang tạo VPS...</h3>
-        <p class="text-sm text-gray-500">Vui lòng không đóng trình duyệt trong lúc hệ thống gửi đơn sang NovaCloud.</p>
+        <p class="text-sm text-gray-500">Vui lòng không đóng trình duyệt trong lúc hệ thống gửi đơn sang SeaServer.</p>
     </div>
 </div>
 

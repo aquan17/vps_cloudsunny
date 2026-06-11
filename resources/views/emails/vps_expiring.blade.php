@@ -17,7 +17,7 @@
         </div>
         
         <p>Chào bạn,</p>
-        <p>Hệ thống NovaCloud xin thông báo VPS <strong>{{ $vps->label }}</strong> (IP: {{ $vps->public_ip }}) của bạn sẽ hết hạn trong <span class="warning-text">{{ $daysLeft }} ngày nữa</span>.</p>
+        <p>Hệ thống SeaServer xin thông báo VPS <strong>{{ $vps->label }}</strong> (IP: {{ $vps->public_ip }}) của bạn sẽ hết hạn trong <span class="warning-text">{{ $daysLeft }} ngày nữa</span>.</p>
         
         <ul>
             <li><strong>Tên VPS:</strong> {{ $vps->label }}</li>
@@ -33,7 +33,7 @@
         </div>
         
         <div class="footer">
-            <p>Email này được gửi tự động từ hệ thống NovaCloud. Vui lòng không trả lời.</p>
+            <p>Email này được gửi tự động từ hệ thống SeaServer. Vui lòng không trả lời.</p>
         </div>
     </div>
 </body>

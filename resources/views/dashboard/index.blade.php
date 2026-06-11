@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Máy chủ VPS — NovaCloud')
+@section('title', 'Máy chủ VPS — SeaServer')
 
 @section('breadcrumbs')
     <span>Máy chủ VPS</span>

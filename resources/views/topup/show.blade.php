@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Thanh toán — NovaCloud')
+@section('title', 'Thanh toán — SeaServer')
 @section('robots', 'noindex, nofollow')
 
 @section('breadcrumbs')

@@ -35,7 +35,7 @@
             </div>
             <div class="content">
                 <p>Xin chào,</p>
-                <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ tại NovaCloud. Máy chủ ảo <span class="highlight">{{ $vps->label }}</span> của bạn đã được khởi tạo thành công.</p>
+                <p>Cảm ơn bạn đã tin tưởng và sử dụng dịch vụ tại SeaServer. Máy chủ ảo <span class="highlight">{{ $vps->label }}</span> của bạn đã được khởi tạo thành công.</p>
                 
                 <table class="info-table">
                     <tr>
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="footer">
-                <p>&copy; {{ date('Y') }} NovaCloud. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} SeaServer. All rights reserved.</p>
             </div>
         </div>
     </div>

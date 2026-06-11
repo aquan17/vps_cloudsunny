@@ -1,15 +1,15 @@
 @extends('layouts.app')
-@section('title', 'NovaCloud Accounts - Admin')
+@section('title', 'SeaServer Accounts - Admin')
 
 @section('breadcrumbs')
     <span>Quản trị</span>
     <span class="mx-2 text-gray-300">/</span>
-    <span class="text-gray-900">NovaCloud API</span>
+    <span class="text-gray-900">SeaServer API</span>
 @endsection
 
 @section('content')
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">NovaCloud Agency Accounts</h1>
+    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">SeaServer Agency Accounts</h1>
     <p class="text-sm text-gray-500 mt-1">Quản lý API username, app key, secret key và số dư đại lý.</p>
 </div>
 
@@ -105,7 +105,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center text-gray-500">Chưa có NovaCloud account.</td>
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-500">Chưa có SeaServer account.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -116,7 +116,7 @@
 
     <div class="xl:col-span-1 sticky top-6 self-start">
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-            <h3 class="text-base font-bold text-gray-900 mb-5">Thêm NovaCloud API</h3>
+            <h3 class="text-base font-bold text-gray-900 mb-5">Thêm SeaServer API</h3>
             <form method="POST" action="{{ route('admin.accounts.store') }}" class="space-y-4">
                 @csrf
                 <div>

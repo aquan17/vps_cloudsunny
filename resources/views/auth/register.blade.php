@@ -1,11 +1,11 @@
 @extends('layouts.guest')
-@section('title', 'Đăng ký — NovaCloud')
+@section('title', 'Đăng ký — SeaServer')
 
 @section('content')
 <div class="p-8">
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-gray-900">Tạo tài khoản</h1>
-        <p class="text-gray-500 mt-2 text-sm">Miễn phí — bắt đầu thuê VPS NovaCloud siêu tốc.</p>
+        <p class="text-gray-500 mt-2 text-sm">Miễn phí — bắt đầu thuê VPS SeaServer siêu tốc.</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-4">

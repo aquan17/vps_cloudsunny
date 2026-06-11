@@ -1,17 +1,17 @@
 @extends('layouts.app')
-@section('title', 'Sửa NovaCloud Account - Admin')
+@section('title', 'Sửa SeaServer Account - Admin')
 
 @section('breadcrumbs')
     <span>Quản trị</span>
     <span class="mx-2 text-gray-300">/</span>
-    <a href="{{ route('admin.accounts.index') }}" class="text-gray-500 hover:text-gray-900">NovaCloud API</a>
+    <a href="{{ route('admin.accounts.index') }}" class="text-gray-500 hover:text-gray-900">SeaServer API</a>
     <span class="mx-2 text-gray-300">/</span>
     <span class="text-gray-900">Sửa</span>
 @endsection
 
 @section('content')
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Cập nhật NovaCloud Account</h1>
+    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Cập nhật SeaServer Account</h1>
     <p class="text-sm text-gray-500 mt-1">{{ $account->label }}</p>
 </div>
 

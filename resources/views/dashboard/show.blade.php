@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $vps->label . ' — NovaCloud')
+@section('title', $vps->label . ' — SeaServer')
 
 @section('breadcrumbs')
     <a href="{{ route('dashboard') }}" class="hover:text-gray-900 transition-colors">Máy chủ VPS</a>
