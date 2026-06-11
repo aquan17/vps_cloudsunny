@@ -90,7 +90,8 @@ class CloudSunnyPricingService
 
         // Fallback for old VPS instances that have provider_id stored in database
         foreach ($plans as $plan) {
-            if (($plan['provider_plan_key'] ?? '') === $planId) {
+            $key = $plan['provider_plan_key'] ?? $plan['provider_id'] ?? '';
+            if ($key === $planId) {
                 return $plan;
             }
         }
