@@ -35,13 +35,7 @@
         </div>
     </div>
     <div class="flex gap-3">
-        <form method="POST" action="{{ route('dashboard.sync', $vps) }}">
-            @csrf
-            <button type="submit" class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 font-medium text-sm transition-colors shadow-sm flex items-center gap-2">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-                Đồng bộ trạng thái
-            </button>
-        </form>
+        <!-- Nút đồng bộ đã được gỡ bỏ vì có auto-polling -->
     </div>
 </div>
 
@@ -200,47 +194,65 @@
                 <h3 class="text-sm font-semibold text-gray-900">Quản lý nguồn</h3>
             </div>
             
-            <div class="p-4 space-y-3">
-                <form method="POST" action="{{ route('dashboard.boot', $vps) }}" data-confirm="Bật nguồn VPS?">
+            <div class="p-4 grid grid-cols-3 gap-3">
+                <form method="POST" action="{{ route('dashboard.boot', $vps) }}" class="w-full" data-confirm="Bật nguồn VPS?">
                     @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors text-left group">
+                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors group">
                         <svg class="text-gray-400 group-hover:text-cloud-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" /></svg>
-                        <span class="text-sm font-medium text-gray-700 group-hover:text-cloud-700">Boot</span>
+                        <span class="text-xs font-medium text-gray-700 group-hover:text-cloud-700">Boot</span>
                     </button>
                 </form>
                 
-                <form method="POST" action="{{ route('dashboard.reboot', $vps) }}" data-confirm="Khởi động lại VPS?">
+                <form method="POST" action="{{ route('dashboard.reboot', $vps) }}" class="w-full" data-confirm="Khởi động lại VPS?">
                     @csrf
-                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors text-left group">
+                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-gray-200 rounded-lg hover:border-cloud-300 hover:bg-cloud-50 transition-colors group">
                         <svg class="text-gray-400 group-hover:text-cloud-600" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
-                        <span class="text-sm font-medium text-gray-700 group-hover:text-cloud-700">Reboot</span>
+                        <span class="text-xs font-medium text-gray-700 group-hover:text-cloud-700">Reboot</span>
                     </button>
                 </form>
                 
-                <div class="pt-2">
-                    <form method="POST" action="{{ route('dashboard.shutdown', $vps) }}" data-confirm="Tắt nguồn VPS?">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 border border-red-100 bg-red-50/50 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors text-left group">
-                            <svg class="text-red-500" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z" /></svg>
-                            <span class="text-sm font-medium text-red-700">Force Shutdown</span>
-                        </button>
-                    </form>
-                </div>
+                <form method="POST" action="{{ route('dashboard.shutdown', $vps) }}" class="w-full" data-confirm="Tắt nguồn VPS?">
+                    @csrf
+                    <button type="submit" class="w-full flex flex-col items-center justify-center gap-2 px-2 py-3 border border-red-100 bg-red-50/50 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors group">
+                        <svg class="text-red-500" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z" /></svg>
+                        <span class="text-xs font-medium text-red-700">Shutdown</span>
+                    </button>
+                </form>
             </div>
         </div>
         
-        {{-- Change Password Card --}}
+        {{-- Upgrade Configuration Card --}}
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                <h3 class="text-sm font-semibold text-gray-900">Đổi mật khẩu</h3>
+                <h3 class="text-sm font-semibold text-gray-900">Nâng cấp cấu hình</h3>
             </div>
             <div class="p-4">
-                <p class="text-xs text-gray-500 mb-4">VPS sẽ bị khởi động lại để áp dụng mật khẩu mới.</p>
-                <form method="POST" action="{{ route('dashboard.password', $vps) }}" data-confirm="Đổi mật khẩu root? VPS sẽ bị tắt trong ~60s.">
+                <p class="text-xs text-gray-500 mb-4">Thanh toán bằng số dư. VPS sẽ khởi động lại để nhận cấu hình mới.</p>
+                <form method="POST" action="{{ route('dashboard.upgrade', $vps) }}" data-confirm="Nâng cấp VPS? Tiến trình sẽ khởi động lại máy chủ và trừ phí vào số dư.">
                     @csrf
-                    <input type="password" name="new_password" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm mb-3 focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600" placeholder="Mật khẩu mới (≥11 ký tự)" minlength="11" required>
-                    <button type="submit" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-md transition-colors text-sm">
-                        Cập nhật mật khẩu
+                    <div class="space-y-3 mb-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm CPU ({{ number_format($addonPrices['cpu_monthly'] ?? 22000) }}đ/Core)</label>
+                            <input type="number" name="addon_cpu" min="0" max="16" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm RAM ({{ number_format($addonPrices['ram_monthly'] ?? 22000) }}đ/GB)</label>
+                            <input type="number" name="addon_ram" min="0" max="64" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm Ổ cứng ({{ number_format($addonPrices['disk_10gb_monthly'] ?? 10000) }}đ/10GB)</label>
+                            <select name="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600">
+                                <option value="0">Không thêm</option>
+                                <option value="10">+10 GB</option>
+                                <option value="20">+20 GB</option>
+                                <option value="30">+30 GB</option>
+                                <option value="50">+50 GB</option>
+                                <option value="100">+100 GB</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-cloud-600 hover:bg-cloud-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm shadow-sm">
+                        Nâng cấp ngay
                     </button>
                 </form>
             </div>
