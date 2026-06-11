@@ -278,6 +278,29 @@
                 </form>
             </div>
         </div>
+        {{-- Renew VPS Card --}}
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                <h3 class="text-sm font-semibold text-gray-900">Gia hạn VPS</h3>
+            </div>
+            <div class="p-4">
+                <p class="text-xs text-gray-500 mb-4">Hệ thống sẽ tự động trừ phí vào số dư tài khoản của bạn.</p>
+                <form method="POST" action="{{ route('dashboard.renew', $vps) }}" data-confirm="Xác nhận gia hạn VPS? Số dư sẽ bị trừ tương ứng.">
+                    @csrf
+                    <div class="mb-4">
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Chọn chu kỳ gia hạn</label>
+                        <select name="billing_cycle" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600" required>
+                            @foreach($renewPrices as $cycle => $data)
+                                <option value="{{ $cycle }}">{{ $data['label'] }} - {{ number_format($data['price']) }}đ</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm shadow-sm">
+                        Thanh toán gia hạn
+                    </button>
+                </form>
+            </div>
+        </div>
         
     </div>
 </div>
