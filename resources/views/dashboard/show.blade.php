@@ -350,11 +350,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const diskPrice = parseInt(diskInput.dataset.price) || 10000;
             totalPerMonth += (diskVal / 10) * diskPrice;
             
-            // Tính số tiền thực tế dựa trên số ngày còn lại
-            const prorated = Math.ceil((totalPerMonth * daysRemaining) / 30);
+            // Tính số tiền thực tế dựa trên logic: Dưới 15 ngày tính nửa tháng, trên 15 ngày tính tròn 1 tháng
+            const fullMonths = Math.floor(daysRemaining / 30);
+            const remainderDays = daysRemaining % 30;
+            
+            let chargeFactor = fullMonths;
+            if (remainderDays > 15) {
+                chargeFactor += 1;
+            } else if (remainderDays > 0) {
+                chargeFactor += 0.5;
+            }
+            
+            const finalPrice = Math.max(0, Math.round(totalPerMonth * chargeFactor));
             
             // Hiển thị
-            priceDisplay.innerText = new Intl.NumberFormat('vi-VN').format(prorated) + 'đ';
+            priceDisplay.innerText = new Intl.NumberFormat('vi-VN').format(finalPrice) + 'đ';
         }
 
         upgradeInputs.forEach(input => {
