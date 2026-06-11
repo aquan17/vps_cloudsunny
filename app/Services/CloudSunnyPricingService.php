@@ -113,7 +113,12 @@ class CloudSunnyPricingService
                 }
 
                 $items = $this->api->forAccount($account)->listOperatingSystems($productId);
-                if (!$items) {
+                if (empty($items) && $productId !== 1) {
+                    // Fallback to a common product ID if the specific one returns no OS list
+                    $items = $this->api->forAccount($account)->listOperatingSystems(1);
+                }
+                
+                if (empty($items)) {
                     return config('cloudsunny.images', []);
                 }
 
