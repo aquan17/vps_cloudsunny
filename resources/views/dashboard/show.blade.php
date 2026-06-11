@@ -255,13 +255,31 @@
 <script>
 
 
-// Copy to clipboard
 function copyText(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
-        setTimeout(() => { btn.innerHTML = orig; }, 2000);
-    });
+    const successIcon = '<svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    const orig = btn.innerHTML;
+    
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            btn.innerHTML = successIcon;
+            setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        });
+    } else {
+        // Fallback for non-HTTPS connections
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            btn.innerHTML = successIcon;
+            setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        } catch (err) {}
+        document.body.removeChild(textArea);
+    }
 }
 
 // Auto-polling trạng thái
