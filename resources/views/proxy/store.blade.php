@@ -19,8 +19,10 @@
     </a>
 </div>
 
-<form method="POST" action="{{ route('proxy.store.store') }}" id="proxyForm" class="space-y-6 max-w-5xl mx-auto">
+<form method="POST" action="{{ route('proxy.store.store') }}" id="proxyForm" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     @csrf
+
+    <div class="lg:col-span-2 space-y-6">
 
     @if(session('success'))
         <div class="p-4 rounded-xl bg-green-50 border border-green-200 text-sm text-green-800 font-medium flex items-center gap-3">
@@ -116,48 +118,67 @@
             <h2 class="text-lg font-bold text-gray-900">Xác thực kết nối <span class="text-sm font-normal text-gray-500 ml-2">(Tùy chọn)</span></h2>
         </div>
         
-        <p class="text-sm text-gray-500 mb-6 bg-blue-50/50 p-4 rounded-lg border border-blue-100/50">Để trống nếu bạn không muốn đặt mật khẩu, hệ thống sẽ tự động gán Port ngẫu nhiên hoặc cho phép IP Auth theo cấu hình gốc.</p>
+        <p class="text-sm text-gray-500 mb-6 bg-blue-50/50 p-4 rounded-lg border border-blue-100/50">
+            <strong>Lưu ý:</strong> Quý khách có thể để trống toàn bộ nếu không có nhu cầu tùy chỉnh. Hệ thống sẽ tự động gán Port kết nối ngẫu nhiên để tăng tính bảo mật, kèm theo Username/Password mặc định hoặc kích hoạt tính năng nhận diện IP gốc.
+        </p>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="space-y-4">
                 <h3 class="font-semibold text-gray-900 pb-2 border-b">Giao thức HTTP</h3>
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Username</label>
-                    <input type="text" name="http_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Nhập username...">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Username <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
+                    <input type="text" name="http_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Password</label>
-                    <input type="text" name="http_password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Nhập password...">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Password <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
+                    <input type="text" name="http_password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
                 </div>
             </div>
 
             <div class="space-y-4">
                 <h3 class="font-semibold text-gray-900 pb-2 border-b">Giao thức SOCKS5</h3>
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Username</label>
-                    <input type="text" name="sock5_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Nhập username...">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Username <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
+                    <input type="text" name="sock5_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-600 mb-1">Password</label>
-                    <input type="text" name="sock5_password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Nhập password...">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Password <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
+                    <input type="text" name="sock5_password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
                 </div>
             </div>
         </div>
     </section>
+    </div>
 
-    {{-- TOTAL & SUBMIT --}}
-    <div class="sticky bottom-6 bg-white border border-gray-200 rounded-2xl shadow-xl p-6 z-20">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <span class="block text-sm text-gray-500 font-medium mb-1">Tổng cộng:</span>
-                <div class="text-3xl font-bold text-gray-900 font-mono tracking-tight" id="total_price_display">0 đ</div>
-                <div class="text-sm text-gray-500 mt-2">Số dư hiện tại: <span class="font-medium text-gray-900 font-mono bg-gray-100 px-2 py-0.5 rounded">{{ number_format(Auth::user()->balance) }}đ</span></div>
+    {{-- TOTAL & SUBMIT SIDEBAR --}}
+    <div class="lg:col-span-1">
+        <div class="sticky top-24 bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-bold text-gray-900 mb-4 pb-4 border-b">Tóm tắt đơn hàng</h2>
+            
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Dịch vụ:</span>
+                    <span class="font-medium text-gray-900">Thuê Proxy IPv4</span>
+                </div>
+                <div class="flex justify-between items-end border-t border-gray-100 pt-4 mt-2">
+                    <span class="text-gray-900 font-bold">Tổng thanh toán:</span>
+                    <div class="text-right">
+                        <div class="text-3xl font-bold text-cloud-600 font-mono tracking-tight leading-none" id="total_price_display">0đ</div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                    <span>Số dư khả dụng:</span>
+                    <span class="font-bold text-gray-900 font-mono">{{ number_format(Auth::user()->balance) }}đ</span>
+                </div>
             </div>
             
-            <button type="submit" id="submit_btn" class="w-full md:w-auto bg-cloud-600 hover:bg-cloud-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-8 py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all text-base flex items-center justify-center gap-2" disabled>
+            <button type="submit" id="submit_btn" class="w-full bg-cloud-600 hover:bg-cloud-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-6 py-3.5 rounded-xl font-bold shadow-md hover:shadow-lg transition-all text-base flex items-center justify-center gap-2" disabled>
                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 Thanh toán & Khởi tạo
             </button>
+            <p class="text-[11px] text-gray-400 text-center mt-3 leading-relaxed">
+                Bằng việc bấm nút Thanh toán, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi.
+            </p>
         </div>
     </div>
 </form>
