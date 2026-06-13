@@ -187,6 +187,32 @@ class CloudSunnyApiService
         return $data;
     }
 
+    // --- PROXY METHODS ---
+
+    public function createProxy(array $data): array
+    {
+        return $this->post('/agency/tao-moi-don-hang-proxy', $data);
+    }
+
+    public function listProxies(): array
+    {
+        return $this->get('/agency/danh-sach-proxy');
+    }
+
+    public function getProxy(int $id): array
+    {
+        return $this->get('/agency/chi-tiet-proxy', ['id' => $id]);
+    }
+
+    public function actionProxy(array $ids, string $action, array $extra = []): array
+    {
+        return $this->post('/agency/thao-tac-proxy', array_merge([
+            'ids' => array_values($ids),
+            'action' => $action,
+        ], $extra));
+    }
+
+
     private function get(string $path, array $query = []): array
     {
         return $this->request('get', $path, $query);

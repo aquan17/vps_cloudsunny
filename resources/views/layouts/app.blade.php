@@ -91,6 +91,20 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
                 Máy chủ VPS
             </a>
+
+            <a href="{{ route('proxy.index') }}" 
+               class="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors
+               {{ request()->routeIs('proxy.index') || request()->routeIs('proxy.show') ? 'bg-cloud-50 text-cloud-700 border-l-2 border-cloud-600 -ml-3 pl-[14px]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.974 0-5.699-.588-8.083-1.582" /></svg>
+                Dịch vụ Proxy
+            </a>
+            
+            <a href="{{ route('proxy.store.index') }}" 
+               class="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors
+               {{ request()->routeIs('proxy.store*') ? 'bg-cloud-50 text-cloud-700 border-l-2 border-cloud-600 -ml-3 pl-[14px]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" /></svg>
+                Mua Proxy Mới
+            </a>
             
             <a href="{{ route('topup.index') }}" 
                class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors

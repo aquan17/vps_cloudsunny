@@ -138,6 +138,39 @@
                         </label>
                     @endforeach
                 </div>
+
+                <div class="mt-8 border-t border-gray-100 pt-6">
+                    <h3 class="text-sm font-bold text-gray-900 mb-4">Nâng cấp cấu hình (Tuỳ chọn)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm CPU (+{{ number_format($addonPrices['cpu'] ?? 22000) }}đ/Core/Tháng)</label>
+                            <select name="addon_cpu" id="addon_cpu" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
+                                <option value="0">Không thêm</option>
+                                @for($i=1; $i<=8; $i++)
+                                    <option value="{{ $i }}" {{ old('addon_cpu') == $i ? 'selected' : '' }}>+{{ $i }} Core</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm RAM (+{{ number_format($addonPrices['ram'] ?? 22000) }}đ/GB/Tháng)</label>
+                            <select name="addon_ram" id="addon_ram" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
+                                <option value="0">Không thêm</option>
+                                @for($i=1; $i<=16; $i++)
+                                    <option value="{{ $i }}" {{ old('addon_ram') == $i ? 'selected' : '' }}>+{{ $i }} GB</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm Ổ cứng (+{{ number_format($addonPrices['disk'] ?? 10000) }}đ/10GB/Tháng)</label>
+                            <select name="addon_disk" id="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
+                                <option value="0">Không thêm</option>
+                                @for($i=10; $i<=200; $i+=10)
+                                    <option value="{{ $i }}" {{ old('addon_disk') == $i ? 'selected' : '' }}>+{{ $i }} GB</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             @if($errors->any())
@@ -211,47 +244,66 @@ function selectOs(radio) {
     document.getElementById('summaryOs').textContent = images[radio.value] || radio.value;
 }
 
-function selectDur(radio) {
-    selectedCycle = radio.value;
-    document.getElementById('summaryDuration').textContent = radio.dataset.label || radio.value;
-    updateTotal();
-}
+document.querySelectorAll('input[name="duration"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        selectedCycle = this.value;
+        document.getElementById('summaryDuration').textContent = this.dataset.label || this.value;
+        updateTotal();
+    });
+});
 
 function updateTotal() {
     const months = Number(cycleMonths[selectedCycle] || 1);
-    const total = Number(prices[selectedCycle] || 0);
-    document.getElementById('totalPrice').textContent = total.toLocaleString('vi-VN') + ' đ';
-    document.getElementById('summaryCpu').textContent = baseSpec.cpu;
-    document.getElementById('summaryRam').textContent = baseSpec.ram;
-    document.getElementById('summaryDisk').textContent = baseSpec.disk;
+    let total = Number(prices[selectedCycle] || 0);
 
-    const btn = document.getElementById('btnSubmitOrder');
-    const errorDiv = document.getElementById('balanceErrorDiv');
+    const addonCpu = parseInt(document.getElementById('addon_cpu').value) || 0;
+    const addonRam = parseInt(document.getElementById('addon_ram').value) || 0;
+    const addonDisk = parseInt(document.getElementById('addon_disk').value) || 0;
+
+    let addonPrice = 0;
+    if (months > 0) {
+        let chargeFactor = 1.0;
+        if (months === 0.5) {
+             chargeFactor = 0.5;
+        } else {
+             chargeFactor = months;
+        }
+        
+        addonPrice += addonCpu * (addonPrices.cpu || 22000) * chargeFactor;
+        addonPrice += addonRam * (addonPrices.ram || 22000) * chargeFactor;
+        addonPrice += (addonDisk / 10) * (addonPrices.disk || 10000) * chargeFactor;
+    }
+
+    total += addonPrice;
+
+    document.getElementById('summaryCpu').textContent = baseSpec.cpu + addonCpu;
+    document.getElementById('summaryRam').textContent = baseSpec.ram + addonRam;
+    document.getElementById('summaryDisk').textContent = baseSpec.disk + addonDisk;
+
+    document.getElementById('totalPrice').textContent = total.toLocaleString('vi-VN') + ' đ';
+    
+    const btnSubmit = document.getElementById('btnSubmitOrder');
+    const errDiv = document.getElementById('balanceErrorDiv');
     if (total > userBalance) {
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-        if (errorDiv) errorDiv.style.display = 'block';
+        btnSubmit.disabled = true;
+        btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+        errDiv.style.display = 'block';
     } else {
-        btn.disabled = false;
-        btn.classList.remove('opacity-50', 'cursor-not-allowed');
-        if (errorDiv) errorDiv.style.display = 'none';
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+        errDiv.style.display = 'none';
     }
 }
 
-document.querySelectorAll('input[name="duration"]').forEach((radio) => {
-    radio.addEventListener('change', () => selectDur(radio));
-});
-
-const checkedDuration = document.querySelector('input[name="duration"]:checked');
-if (checkedDuration) {
-    selectDur(checkedDuration);
+function updateTotalPrice() {
+    updateTotal();
 }
 
 document.getElementById('orderForm').addEventListener('submit', function() {
     document.getElementById('fullScreenLoader').classList.remove('hidden');
-    setTimeout(() => {
-        document.getElementById('btnSubmitOrder').disabled = true;
-    }, 10);
 });
+
+// Run once to initialize
+updateTotal();
 </script>
 @endpush

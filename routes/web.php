@@ -50,8 +50,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Delete
     Route::delete('/dashboard/vps/{vps}',        [DashboardController::class, 'destroy'])->name('dashboard.destroy');
 
-    Route::get('/order/{plan}',  [StoreController::class, 'create'])->name('store.create');
-    Route::post('/order',        [StoreController::class, 'store'])->name('store.store');
+    // VPS Store routes
+    Route::get('/store', [StoreController::class, 'index'])->name('store.index');
+    Route::get('/store/{plan}', [StoreController::class, 'create'])->name('store.create');
+    Route::post('/store', [StoreController::class, 'store'])->name('store.store');
+
+    // Proxy Store routes
+    Route::get('/proxy/store', [App\Http\Controllers\ProxyStoreController::class, 'index'])->name('proxy.store.index');
+    Route::post('/proxy/store', [App\Http\Controllers\ProxyStoreController::class, 'store'])->name('proxy.store.store');
+
+    // Proxy Management routes
+    Route::get('/proxy', [App\Http\Controllers\ProxyController::class, 'index'])->name('proxy.index');
+    Route::get('/proxy/{proxy}', [App\Http\Controllers\ProxyController::class, 'show'])->name('proxy.show');
+    Route::get('/proxy/{proxy}/status', [App\Http\Controllers\ProxyController::class, 'statusJson'])->name('proxy.statusJson');
+    Route::post('/proxy/{proxy}/renew', [App\Http\Controllers\ProxyController::class, 'renew'])->name('proxy.renew');
 
     // Top-ups
     Route::get('/topup',                [TopupController::class, 'index'])->name('topup.index');

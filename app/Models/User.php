@@ -51,6 +51,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(VpsInstance::class);
     }
 
+    public function proxyInstances()
+    {
+        return $this->hasMany(ProxyInstance::class);
+    }
+
     public function isAdmin(): bool
     {
         return (bool) $this->is_admin;

@@ -205,77 +205,237 @@
 {{-- ══ PRICING SECTION ══ --}}
 <section id="plans" class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
+        <div class="text-center mb-10">
             <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">High-Performance Plans</h2>
             <p class="mt-4 text-lg text-gray-600">Bảng giá đơn giản, dễ hiểu cho các dự án production.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            @php 
-                // Lấy 3 gói đầu tiên để hiển thị (hoặc lấy tất cả nếu muốn)
-                $displayPlans = array_slice($plans, 0, 3, true); 
-                $count = 0;
-            @endphp
-            @foreach($displayPlans as $pid => $p)
-                @php 
-                    $count++;
-                    $isPopular = ($count == 2); // Highlight the middle plan
-                @endphp
-                <div class="relative bg-white rounded-2xl p-8 flex flex-col
-                    {{ $isPopular ? 'border-2 border-cloud-600 shadow-xl scale-105 z-10' : 'border border-gray-200 shadow-sm' }}">
-                    
-                    @if($isPopular)
-                        <div class="absolute -top-3 inset-x-0 flex justify-center">
-                            <span class="bg-cloud-600 text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-full shadow-sm">
-                                Most Popular
-                            </span>
-                        </div>
-                    @endif
-
-                    <h3 class="text-xl font-bold text-gray-900">{{ $p['name'] }}</h3>
-                    <p class="text-sm text-gray-500 mt-2">Dành cho các ứng dụng {{ $isPopular ? 'chuyên nghiệp' : 'vừa và nhỏ' }}.</p>
-                    
-                    <div class="mt-6 mb-8 flex items-baseline text-gray-900">
-                        @php $displayPrice = (!empty($p['on_sale'])) ? $p['sale_price_per_month'] : $p['price_per_month']; @endphp
-                        <span class="text-4xl font-extrabold tracking-tight">{{ number_format($displayPrice) }}</span>
-                        @if(!empty($p['on_sale']))
-                            <span class="ml-2 text-sm text-gray-500 line-through">{{ number_format($p['price_per_month']) }}</span>
-                        @endif
-                        <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
-                    </div>
-
-                    <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
-                        <li class="flex items-center gap-3">
-                            <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
-                            <span class="font-medium">{{ $p['cores'] }} vCPU (Dedicated)</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>
-                            <span class="font-medium">{{ $p['ram'] }} GB RAM</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
-                            <span class="font-medium">{{ $p['disk'] }} GB NVMe</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-                            <span class="font-medium">{{ $p['transfer_tb'] }} TB Bandwidth</span>
-                        </li>
-                    </ul>
-
-                    <a href="{{ auth()->check() ? route('store.create', $pid) : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold transition-colors
-                        {{ $isPopular ? 'bg-cloud-600 hover:bg-cloud-700 text-white shadow-sm' : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50' }}">
-                        Chọn {{ $p['name'] }}
-                    </a>
-                </div>
-            @endforeach
+        <div class="flex justify-center mb-12">
+            <div class="inline-flex bg-gray-100 p-1 rounded-lg">
+                <button onclick="switchTab('vps')" id="tab-btn-vps" class="px-6 py-2.5 rounded-md text-sm font-bold bg-white text-gray-900 shadow-sm transition-all">Máy chủ ảo (VPS)</button>
+                <button onclick="switchTab('proxy')" id="tab-btn-proxy" class="px-6 py-2.5 rounded-md text-sm font-bold text-gray-600 hover:text-gray-900 transition-all">Proxy IPv4</button>
+            </div>
         </div>
-        
-        <div class="mt-12 text-center">
-            <a href="{{ auth()->check() ? route('pricing') : route('login') }}" class="text-sm font-semibold text-cloud-600 hover:text-cloud-700 flex items-center justify-center gap-1">
-                Xem toàn bộ bảng giá đầy đủ
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
-            </a>
+
+        <div id="tab-content-vps">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                @php $count = 0; @endphp
+                @foreach($plans as $pid => $p)
+                    @php 
+                        $count++;
+                        $isPopular = ($count == 2); // Highlight the second plan
+                    @endphp
+                    <div class="relative bg-white rounded-2xl p-8 flex flex-col
+                        {{ $isPopular ? 'border-2 border-cloud-600 shadow-xl scale-105 z-10' : 'border border-gray-200 shadow-sm' }}">
+                        
+                        @if($isPopular)
+                            <div class="absolute -top-3 inset-x-0 flex justify-center">
+                                <span class="bg-cloud-600 text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-full shadow-sm">
+                                    Most Popular
+                                </span>
+                            </div>
+                        @endif
+
+                        <h3 class="text-xl font-bold text-gray-900">{{ $p['name'] }}</h3>
+                        <p class="text-sm text-gray-500 mt-2">Dành cho các ứng dụng {{ $isPopular ? 'chuyên nghiệp' : 'vừa và nhỏ' }}.</p>
+                        
+                        <div class="mt-6 mb-8 flex items-baseline text-gray-900">
+                            @php $displayPrice = (!empty($p['on_sale'])) ? $p['sale_price_per_month'] : $p['price_per_month']; @endphp
+                            <span class="text-4xl font-extrabold tracking-tight">{{ number_format($displayPrice) }}</span>
+                            @if(!empty($p['on_sale']))
+                                <span class="ml-2 text-sm text-gray-500 line-through">{{ number_format($p['price_per_month']) }}</span>
+                            @endif
+                            <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
+                        </div>
+
+                        <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
+                            <li class="flex items-center gap-3">
+                                <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                                <span class="font-medium">{{ $p['cores'] }} vCPU (Dedicated)</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25z" /></svg>
+                                <span class="font-medium">{{ $p['ram'] }} GB RAM</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
+                                <span class="font-medium">{{ $p['disk'] }} GB NVMe</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <svg class="text-cloud-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                                <span class="font-medium">{{ $p['transfer_tb'] }} TB Bandwidth</span>
+                            </li>
+                        </ul>
+
+                        <a href="{{ auth()->check() ? route('store.create', $pid) : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold transition-colors
+                            {{ $isPopular ? 'bg-cloud-600 hover:bg-cloud-700 text-white shadow-sm' : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50' }}">
+                            Chọn {{ $p['name'] }}
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="{{ auth()->check() ? route('pricing') : route('login') }}" class="text-sm font-semibold text-cloud-600 hover:text-cloud-700 flex items-center justify-center gap-1">
+                    Xem toàn bộ cấu hình máy chủ ảo
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                </a>
+            </div>
+        </div>
+
+        <div id="tab-content-proxy" class="hidden">
+            @if(empty($proxyProducts))
+                <div class="text-center py-12 bg-gray-50 rounded-xl border border-gray-100 max-w-4xl mx-auto">
+                    <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900">Đang cập nhật hệ thống Proxy</h3>
+                    <p class="mt-2 text-sm text-gray-500">Các gói Proxy tĩnh và dân cư hiện đang được cập nhật trên SeaServer.</p>
+                </div>
+            @else
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    @foreach($proxyProducts as $pid => $p)
+                        <div class="bg-white rounded-2xl p-8 flex flex-col border border-gray-200 shadow-sm hover:border-cloud-300 transition-colors">
+                            <h3 class="text-xl font-bold text-gray-900">{{ $p['title'] }}</h3>
+                            <div class="mt-4 mb-6 flex items-baseline text-gray-900">
+                                <span class="text-3xl font-extrabold tracking-tight">{{ number_format($p['price']) }}</span>
+                                <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
+                            </div>
+                            <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
+                                <li class="flex items-center gap-3">
+                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <span class="font-medium">HTTP / SOCKS5</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <span class="font-medium">Không giới hạn băng thông</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                    <span class="font-medium">IP tĩnh chất lượng cao</span>
+                                </li>
+                            </ul>
+                            <a href="{{ auth()->check() ? route('proxy.store.create', $p['id']) : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50 transition-colors">
+                                Mua Proxy này
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+    </div>
+</section>
+
+{{-- ══ SEO / TRUST SECTION ══ --}}
+<section class="py-24 bg-[#f8fafc] border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {{-- Card 1: VPS --}}
+            <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300">
+                <div class="flex items-start gap-4 mb-8">
+                    <div class="w-14 h-14 shrink-0 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 leading-snug pt-1">Hạ tầng Cloud VPS SSD NVMe Vượt Trội</h3>
+                </div>
+                
+                <ul class="space-y-5 flex-grow">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Sử dụng 100% ổ cứng SSD NVMe Enterprise chuyên dụng cho tốc độ ghi đọc dữ liệu cực lớn.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Bộ vi xử lý Intel Xeon / AMD EPYC hiệu năng cao tối ưu hóa cho các tác vụ nặng.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Băng thông mạng cực lớn 1Gbps - 10Gbps không giới hạn lưu lượng, giúp máy chủ luôn mượt mà.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Hỗ trợ đa dạng hệ điều hành từ Windows Server (2012 - 2022), Windows 10/11 cho tới Linux (Ubuntu, Debian, CentOS).</span>
+                    </li>
+                </ul>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-[13px] text-gray-400 italic leading-relaxed">
+                        SeaServer cung cấp dịch vụ thuê Cloud VPS chất lượng cao, cấu hình mạnh mẽ đáp ứng mọi nhu cầu treo tool MMO, chạy giả lập, chạy web server và lưu trữ dữ liệu an toàn.
+                    </p>
+                </div>
+            </div>
+            
+            {{-- Card 2: Proxy --}}
+            <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300">
+                <div class="flex items-start gap-4 mb-8">
+                    <div class="w-14 h-14 shrink-0 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-500">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 leading-snug pt-1">Proxy IPv4 Tĩnh & Dân Cư Sạch Tinh Khiết</h3>
+                </div>
+                
+                <ul class="space-y-5 flex-grow">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Hỗ trợ đầy đủ hai giao thức kết nối phổ biến nhất hiện nay là HTTP và SOCKS5.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Pool IP sạch 100%, có độ trust cao, hạn chế tối đa tình trạng bị checkpoint tài khoản.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Phù hợp tuyệt đối với các trình duyệt ẩn danh (antidetect browser) như AdsPower, GoLogin, Multilogin.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Định dạng IP tĩnh IPv4 chất lượng cao hoạt động bền bỉ, băng thông không giới hạn.</span>
+                    </li>
+                </ul>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-[13px] text-gray-400 italic leading-relaxed">
+                        Mua Proxy IPv4 SeaServer giúp các chuyên gia MMO, Ads Runner vượt qua các rào cản địa lý, nuôi tài khoản Ads (Facebook, Google, TikTok) an toàn và tối ưu chi phí vận hành.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 3: Giải pháp --}}
+            <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300">
+                <div class="flex items-start gap-4 mb-8">
+                    <div class="w-14 h-14 shrink-0 rounded-2xl bg-green-50 flex items-center justify-center text-green-500">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 leading-snug pt-1">Giải Pháp Tối Ưu Cho MMO & Ads Runner</h3>
+                </div>
+                
+                <ul class="space-y-5 flex-grow">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Hệ thống kích hoạt dịch vụ tự động trong vòng 30 giây ngay sau khi thanh toán thành công.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Trang quản lý dịch vụ (Client Area) thông minh hỗ trợ tự động Reinstall OS, đổi mật khẩu, reboot.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Hỗ trợ nạp tiền và thanh toán trực tuyến qua ngân hàng bằng quét mã QR tiện lợi, khớp lệnh tự động.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-5 h-5 shrink-0 text-blue-500 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span class="text-sm text-gray-600 leading-relaxed">Đội ngũ kỹ thuật túc trực 24/7/365 qua Zalo Group, Facebook Fanpage và Email.</span>
+                    </li>
+                </ul>
+                
+                <div class="mt-8 pt-6 border-t border-gray-100">
+                    <p class="text-[13px] text-gray-400 italic leading-relaxed">
+                        Với thế mạnh vận hành tự động và hạ tầng chuẩn Enterprise, SeaServer tự hào là đối tác hạ tầng tin cậy của hàng ngàn doanh nghiệp MMO và Agency chạy quảng cáo tại Việt Nam.
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -294,4 +454,24 @@
     </div>
 </section>
 
+<script>
+function switchTab(tab) {
+    const btnVps = document.getElementById('tab-btn-vps');
+    const btnProxy = document.getElementById('tab-btn-proxy');
+    const contentVps = document.getElementById('tab-content-vps');
+    const contentProxy = document.getElementById('tab-content-proxy');
+
+    if (tab === 'vps') {
+        btnVps.className = "px-6 py-2.5 rounded-md text-sm font-bold bg-white text-gray-900 shadow-sm transition-all";
+        btnProxy.className = "px-6 py-2.5 rounded-md text-sm font-bold text-gray-600 hover:text-gray-900 transition-all";
+        contentVps.classList.remove('hidden');
+        contentProxy.classList.add('hidden');
+    } else {
+        btnProxy.className = "px-6 py-2.5 rounded-md text-sm font-bold bg-white text-gray-900 shadow-sm transition-all";
+        btnVps.className = "px-6 py-2.5 rounded-md text-sm font-bold text-gray-600 hover:text-gray-900 transition-all";
+        contentProxy.classList.remove('hidden');
+        contentVps.classList.add('hidden');
+    }
+}
+</script>
 @endsection
