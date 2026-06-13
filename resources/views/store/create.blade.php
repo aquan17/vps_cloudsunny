@@ -144,30 +144,30 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-2">Thêm CPU (+{{ number_format($addonPrices['cpu'] ?? 22000) }}đ/Core/Tháng)</label>
-                            <select name="addon_cpu" id="addon_cpu" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
-                                <option value="0">Không thêm</option>
-                                @for($i=1; $i<=8; $i++)
-                                    <option value="{{ $i }}" {{ old('addon_cpu') == $i ? 'selected' : '' }}>+{{ $i }} Core</option>
-                                @endfor
-                            </select>
+                            <div class="relative">
+                                <input type="number" name="addon_cpu" id="addon_cpu" min="0" max="16" step="1" value="{{ old('addon_cpu', 0) }}" class="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="updateTotalPrice()">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">Core</span>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-2">Thêm RAM (+{{ number_format($addonPrices['ram'] ?? 22000) }}đ/GB/Tháng)</label>
-                            <select name="addon_ram" id="addon_ram" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
-                                <option value="0">Không thêm</option>
-                                @for($i=1; $i<=16; $i++)
-                                    <option value="{{ $i }}" {{ old('addon_ram') == $i ? 'selected' : '' }}>+{{ $i }} GB</option>
-                                @endfor
-                            </select>
+                            <div class="relative">
+                                <input type="number" name="addon_ram" id="addon_ram" min="0" max="64" step="1" value="{{ old('addon_ram', 0) }}" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="updateTotalPrice()">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">GB</span>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-2">Thêm Ổ cứng (+{{ number_format($addonPrices['disk'] ?? 10000) }}đ/10GB/Tháng)</label>
-                            <select name="addon_disk" id="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors cursor-pointer bg-white" onchange="updateTotalPrice()">
-                                <option value="0">Không thêm</option>
-                                @for($i=10; $i<=200; $i+=10)
-                                    <option value="{{ $i }}" {{ old('addon_disk') == $i ? 'selected' : '' }}>+{{ $i }} GB</option>
-                                @endfor
-                            </select>
+                            <div class="relative">
+                                <input type="number" name="addon_disk" id="addon_disk" min="0" step="10" value="{{ old('addon_disk', 0) }}" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="this.value = Math.max(0, Math.round((this.value || 0) / 10) * 10); updateTotalPrice()">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">GB</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

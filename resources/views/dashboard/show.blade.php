@@ -255,22 +255,30 @@
                         <div id="upgrade-data" data-days="{{ $daysRemaining }}"></div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm CPU ({{ number_format($addonPrices['cpu_monthly'] ?? 22000) }}đ/Core)</label>
-                            <input type="number" name="addon_cpu" min="0" max="16" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['cpu_monthly'] ?? 22000 }}">
+                            <div class="relative">
+                                <input type="number" name="addon_cpu" min="0" max="16" value="0" step="1" class="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['cpu_monthly'] ?? 22000 }}">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">Core</span>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm RAM ({{ number_format($addonPrices['ram_monthly'] ?? 22000) }}đ/GB)</label>
-                            <input type="number" name="addon_ram" min="0" max="64" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['ram_monthly'] ?? 22000 }}">
+                            <div class="relative">
+                                <input type="number" name="addon_ram" min="0" max="64" value="0" step="1" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['ram_monthly'] ?? 22000 }}">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">GB</span>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1">Thêm Ổ cứng ({{ number_format($addonPrices['disk_10gb_monthly'] ?? 10000) }}đ/10GB)</label>
-                            <select name="addon_disk" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['disk_10gb_monthly'] ?? 10000 }}">
-                                <option value="0">Không thêm</option>
-                                <option value="10">+10 GB</option>
-                                <option value="20">+20 GB</option>
-                                <option value="30">+30 GB</option>
-                                <option value="50">+50 GB</option>
-                                <option value="100">+100 GB</option>
-                            </select>
+                            <div class="relative">
+                                <input type="number" name="addon_disk" min="0" value="0" step="10" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['disk_10gb_monthly'] ?? 10000 }}" onchange="this.value = Math.max(0, Math.round((this.value || 0) / 10) * 10);">
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-xs">GB</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex justify-between items-center mb-3 text-sm">
@@ -345,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalPerMonth += ramVal * ramPrice;
             
             // Lấy giá trị Disk (tính theo cục 10GB)
-            const diskInput = document.querySelector('select[name="addon_disk"]');
+            const diskInput = document.querySelector('input[name="addon_disk"]');
             const diskVal = parseInt(diskInput.value) || 0;
             const diskPrice = parseInt(diskInput.dataset.price) || 10000;
             totalPerMonth += (diskVal / 10) * diskPrice;

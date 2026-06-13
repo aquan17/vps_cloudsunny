@@ -45,7 +45,7 @@ class StoreController extends Controller
             'plan' => $planData,
             'regions' => $pricing->getRegions(),
             'durations' => $pricing->getDurations(),
-            'images' => $pricing->getImages((int) $planData['product_id']),
+            'images' => $pricing->getImages((int) ($planData['product_id'] ?? 0)),
         ]);
     }
 
