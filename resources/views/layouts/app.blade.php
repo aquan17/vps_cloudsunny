@@ -258,7 +258,8 @@
     </script>
 
     {{-- Floating Zalo Button --}}
-    <a href="https://zalo.me/0862579104" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,104,255,0.4)] hover:shadow-[0_6px_25px_rgba(0,104,255,0.6)] transition-all duration-300 hover:scale-110 group bg-white">
+    {{-- <a href="https://zalo.me/0862579104" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,104,255,0.4)] hover:shadow-[0_6px_25px_rgba(0,104,255,0.6)] transition-all duration-300 hover:scale-110 group bg-white"> --}}
+    <a href="https://zalo.me/g/bh9hrrcujly5ab2pqmfj" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-[0_4px_20px_rgba(0,104,255,0.4)] hover:shadow-[0_6px_25px_rgba(0,104,255,0.6)] transition-all duration-300 hover:scale-110 group bg-white">
         <span class="absolute w-full h-full rounded-full bg-[#0068FF] animate-ping opacity-40"></span>
         <img src="{{ asset('image/zalo.svg') }}" alt="Zalo" class="relative z-10 w-full h-full rounded-full object-cover">
     </a>
