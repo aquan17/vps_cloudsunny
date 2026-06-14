@@ -11,9 +11,9 @@ return [
     'default_billing_cycle' => env('CLOUDSUNNY_DEFAULT_BILLING_CYCLE', 'monthly'),
 
     'addon_prices' => [
-        'cpu_monthly' => (int) env('CLOUDSUNNY_ADDON_CPU_MONTHLY', 22000),
-        'ram_monthly' => (int) env('CLOUDSUNNY_ADDON_RAM_MONTHLY', 22000),
-        'disk_10gb_monthly' => (int) env('CLOUDSUNNY_ADDON_DISK_10GB_MONTHLY', 10000),
+        'cpu_monthly' => (int) env('CLOUDSUNNY_ADDON_CPU_MONTHLY', 25000),
+        'ram_monthly' => (int) env('CLOUDSUNNY_ADDON_RAM_MONTHLY', 25000),
+        'disk_10gb_monthly' => (int) env('CLOUDSUNNY_ADDON_DISK_10GB_MONTHLY', 15000),
     ],
 
     // Chi phí gốc từ Provider (Để tính lợi nhuận). Nếu bỏ trống sẽ tự lấy bằng giá bán ở trên.
