@@ -125,6 +125,5 @@ return [
         15 => ['label' => 'Windows Server 2022', 'icon' => '🪟', 'group' => 'Windows'],
         16 => ['label' => 'Almalinux8-AAPanel-Nginx', 'icon' => '🐧', 'group' => 'Linux'],
         17 => ['label' => 'Ubuntu22.04-AAPanel-Nginx', 'icon' => '🐧', 'group' => 'Linux'],
-        18 => ['label' => 'Ubuntu Server 24.04', 'icon' => '🐧', 'group' => 'Linux'],
     ],
 ];
