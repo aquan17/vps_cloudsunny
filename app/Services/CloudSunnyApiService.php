@@ -252,7 +252,7 @@ class CloudSunnyApiService
             ? $pending->withBody(json_encode($data), 'application/json')->get($this->url($path))
             : $pending->post($this->url($path), $data);
 
-        if ($response->status() === 401 && $this->account) {
+        if (in_array($response->status(), [401, 403]) && $this->account) {
             $this->authenticate($this->account);
             $pending = Http::withToken($this->token)
                 ->acceptJson()
