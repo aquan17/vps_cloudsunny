@@ -120,7 +120,7 @@ class StoreController extends Controller
                     'disk' => $plan['disk'] + $addonDisk,
                     'cost_monthly_usd' => 0,
                     'provider_cost' => $providerCost,
-                    'provider_product_id' => (int) $plan['product_id'],
+                    'provider_product_id' => (int) ($plan['product_id'] ?? 0),
                     'provider_os_id' => (int) $validated['image'],
                     'billing_cycle' => $billingCycle,
                     'paid_amount' => $totalPrice,
@@ -136,7 +136,7 @@ class StoreController extends Controller
 
         try {
             $remoteList = $api->forAccount($account)->createVpsOrder(
-                (int) $plan['product_id'],
+                (int) ($plan['product_id'] ?? 0),
                 $billingCycle,
                 (int) $validated['image'],
                 1,
