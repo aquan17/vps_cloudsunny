@@ -269,9 +269,9 @@ function updateTotal() {
              chargeFactor = months;
         }
         
-        addonPrice += addonCpu * (addonPrices.cpu || 22000) * chargeFactor;
-        addonPrice += addonRam * (addonPrices.ram || 22000) * chargeFactor;
-        addonPrice += (addonDisk / 10) * (addonPrices.disk || 10000) * chargeFactor;
+        addonPrice += addonCpu * (addonPrices.cpu_monthly || 25000) * chargeFactor;
+        addonPrice += addonRam * (addonPrices.ram_monthly || 25000) * chargeFactor;
+        addonPrice += (addonDisk / 10) * (addonPrices.disk_10gb_monthly || 15000) * chargeFactor;
     }
 
     total += addonPrice;

@@ -343,19 +343,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Lấy giá trị CPU
             const cpuInput = document.querySelector('input[name="addon_cpu"]');
             const cpuVal = parseInt(cpuInput.value) || 0;
-            const cpuPrice = parseInt(cpuInput.dataset.price) || 22000;
+            const cpuPrice = parseInt(cpuInput.dataset.price) || 25000;
             totalPerMonth += cpuVal * cpuPrice;
             
             // Lấy giá trị RAM
             const ramInput = document.querySelector('input[name="addon_ram"]');
             const ramVal = parseInt(ramInput.value) || 0;
-            const ramPrice = parseInt(ramInput.dataset.price) || 22000;
+            const ramPrice = parseInt(ramInput.dataset.price) || 25000;
             totalPerMonth += ramVal * ramPrice;
             
             // Lấy giá trị Disk (tính theo cục 10GB)
             const diskInput = document.querySelector('input[name="addon_disk"]');
             const diskVal = parseInt(diskInput.value) || 0;
-            const diskPrice = parseInt(diskInput.dataset.price) || 10000;
+            const diskPrice = parseInt(diskInput.dataset.price) || 15000;
             totalPerMonth += (diskVal / 10) * diskPrice;
             
             // Tính số tiền thực tế dựa trên logic: Dưới 15 ngày tính nửa tháng, trên 15 ngày tính tròn 1 tháng
