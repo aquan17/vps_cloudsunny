@@ -254,27 +254,27 @@
                     <div class="space-y-3 mb-4">
                         <div id="upgrade-data" data-days="{{ $daysRemaining }}"></div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm CPU ({{ number_format($addonPrices['cpu_monthly'] ?? 22000) }}đ/Core)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm CPU ({{ number_format($addonPrices['cpu_monthly'] ?? 25000) }}đ/Core)</label>
                             <div class="relative">
-                                <input type="number" name="addon_cpu" min="0" max="16" value="0" step="1" class="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['cpu_monthly'] ?? 22000 }}">
+                                <input type="number" name="addon_cpu" min="0" max="16" value="0" step="1" class="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['cpu_monthly'] ?? 25000 }}">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                     <span class="text-gray-500 text-xs">Core</span>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm RAM ({{ number_format($addonPrices['ram_monthly'] ?? 22000) }}đ/GB)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm RAM ({{ number_format($addonPrices['ram_monthly'] ?? 25000) }}đ/GB)</label>
                             <div class="relative">
-                                <input type="number" name="addon_ram" min="0" max="64" value="0" step="1" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['ram_monthly'] ?? 22000 }}">
+                                <input type="number" name="addon_ram" min="0" max="64" value="0" step="1" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['ram_monthly'] ?? 25000 }}">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                     <span class="text-gray-500 text-xs">GB</span>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm Ổ cứng ({{ number_format($addonPrices['disk_10gb_monthly'] ?? 10000) }}đ/10GB)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-1">Thêm Ổ cứng ({{ number_format($addonPrices['disk_10gb_monthly'] ?? 15000) }}đ/10GB)</label>
                             <div class="relative">
-                                <input type="number" name="addon_disk" min="0" value="0" step="10" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['disk_10gb_monthly'] ?? 10000 }}" onchange="this.value = Math.max(0, Math.round((this.value || 0) / 10) * 10);">
+                                <input type="number" name="addon_disk" min="0" value="0" step="10" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md text-sm focus:border-cloud-600 focus:ring-1 focus:ring-cloud-600 upgrade-input" data-price="{{ $addonPrices['disk_10gb_monthly'] ?? 15000 }}" onchange="this.value = Math.max(0, Math.round((this.value || 0) / 10) * 10);">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                     <span class="text-gray-500 text-xs">GB</span>
                                 </div>

@@ -143,7 +143,7 @@
                     <h3 class="text-sm font-bold text-gray-900 mb-4">Nâng cấp cấu hình (Tuỳ chọn)</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm CPU (+{{ number_format($addonPrices['cpu'] ?? 22000) }}đ/Core/Tháng)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm CPU (+{{ number_format($addonPrices['cpu_monthly'] ?? 25000) }}đ/Core/Tháng)</label>
                             <div class="relative">
                                 <input type="number" name="addon_cpu" id="addon_cpu" min="0" max="16" step="1" value="{{ old('addon_cpu', 0) }}" class="w-full pl-3 pr-12 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="updateTotalPrice()">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm RAM (+{{ number_format($addonPrices['ram'] ?? 22000) }}đ/GB/Tháng)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm RAM (+{{ number_format($addonPrices['ram_monthly'] ?? 25000) }}đ/GB/Tháng)</label>
                             <div class="relative">
                                 <input type="number" name="addon_ram" id="addon_ram" min="0" max="64" step="1" value="{{ old('addon_ram', 0) }}" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="updateTotalPrice()">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -161,7 +161,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm Ổ cứng (+{{ number_format($addonPrices['disk'] ?? 10000) }}đ/10GB/Tháng)</label>
+                            <label class="block text-xs font-medium text-gray-700 mb-2">Thêm Ổ cứng (+{{ number_format($addonPrices['disk_10gb_monthly'] ?? 15000) }}đ/10GB/Tháng)</label>
                             <div class="relative">
                                 <input type="number" name="addon_disk" id="addon_disk" min="0" step="10" value="{{ old('addon_disk', 0) }}" class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm transition-colors bg-white" oninput="updateTotalPrice()" onchange="this.value = Math.max(0, Math.round((this.value || 0) / 10) * 10); updateTotalPrice()">
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
