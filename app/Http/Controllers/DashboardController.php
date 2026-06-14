@@ -198,9 +198,28 @@ class DashboardController extends Controller
         }
 
         $billingCycle = $validated['billing_cycle'];
-        $amount = $pricing->calculatePrice($plan, $billingCycle);
-        $providerCost = $pricing->calculateProviderCost($plan, $billingCycle);
         $months = $pricing->monthsForCycle($billingCycle);
+
+        $addonCpu = max(0, $vps->cpu - $plan['cores']);
+        $addonRam = max(0, $vps->ram - $plan['ram']);
+        $addonDisk = max(0, $vps->disk - $plan['disk']);
+
+        $prices = config('cloudsunny.addon_prices', []);
+        $addonAmountPerMonth = 0;
+        $addonAmountPerMonth += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);
+        $addonAmountPerMonth += $addonRam * (int) ($prices['ram_monthly'] ?? 0);
+        $addonAmountPerMonth += (int) ($addonDisk / 10) * (int) ($prices['disk_10gb_monthly'] ?? 0);
+        $addonAmount = $addonAmountPerMonth * max(1, $months);
+
+        $providerPrices = config('cloudsunny.provider_addon_prices', $prices);
+        $addonProviderPerMonth = 0;
+        $addonProviderPerMonth += $addonCpu * (int) ($providerPrices['cpu_monthly'] ?? 0);
+        $addonProviderPerMonth += $addonRam * (int) ($providerPrices['ram_monthly'] ?? 0);
+        $addonProviderPerMonth += (int) ($addonDisk / 10) * (int) ($providerPrices['disk_10gb_monthly'] ?? 0);
+        $addonProviderCost = $addonProviderPerMonth * max(1, $months);
+
+        $amount = $pricing->calculatePrice($plan, $billingCycle) + $addonAmount;
+        $providerCost = $pricing->calculateProviderCost($plan, $billingCycle) + $addonProviderCost;
         $user = Auth::user();
 
         if ($user->balance < $amount) {
@@ -269,6 +288,7 @@ class DashboardController extends Controller
         }
 
         $amount = $this->calcAddonPrice($vps, $addonCpu, $addonRam, $addonDisk);
+        $providerCost = $this->calcAddonProviderCost($vps, $addonCpu, $addonRam, $addonDisk);
         $user = Auth::user();
 
         if ($user->balance < $amount) {
@@ -292,6 +312,7 @@ class DashboardController extends Controller
                 'ram' => (int) $vps->ram + $addonRam,
                 'disk' => (int) $vps->disk + $addonDisk,
                 'paid_amount' => (int) $vps->paid_amount + $amount,
+                'provider_cost' => (int) $vps->provider_cost + $providerCost,
                 'status' => 'Đang khởi động lại',
             ]);
 
@@ -391,6 +412,29 @@ class DashboardController extends Controller
     {
         $days = $vps->expires_at ? max(1, (int) now()->diffInDays($vps->expires_at, false)) : 30;
         $prices = config('cloudsunny.addon_prices', []);
+
+        $monthly = 0;
+        $monthly += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);
+        $monthly += $addonRam * (int) ($prices['ram_monthly'] ?? 0);
+        $monthly += (int) ($addonDisk / 10) * (int) ($prices['disk_10gb_monthly'] ?? 0);
+
+        $fullMonths = floor($days / 30);
+        $remainderDays = $days % 30;
+        
+        $chargeFactor = $fullMonths;
+        if ($remainderDays > 15) {
+            $chargeFactor += 1;
+        } elseif ($remainderDays > 0) {
+            $chargeFactor += 0.5;
+        }
+
+        return max(0, (int) round($monthly * $chargeFactor));
+    }
+
+    private function calcAddonProviderCost(VpsInstance $vps, int $addonCpu, int $addonRam, int $addonDisk): int
+    {
+        $days = $vps->expires_at ? max(1, (int) now()->diffInDays($vps->expires_at, false)) : 30;
+        $prices = config('cloudsunny.provider_addon_prices', config('cloudsunny.addon_prices', []));
 
         $monthly = 0;
         $monthly += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);

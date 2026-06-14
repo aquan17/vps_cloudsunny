@@ -96,8 +96,8 @@ class StoreController extends Controller
         $expiresAt = Carbon::now()->addMonths($months);
 
         try {
-            $providerCost = $pricing->calculateProviderCost($plan, $billingCycle);
-            // Addon costs are not strictly tracked from API, so we just use the base provider cost for now.
+            $providerCost = $pricing->calculateProviderCost($plan, $billingCycle)
+                + $this->calcAddonProviderCost($months, $addonCpu, $addonRam, $addonDisk);
 
             $vps = DB::transaction(function () use ($user, $account, $validated, $plan, $totalPrice, $providerCost, $expiresAt, $billingCycle, $addonCpu, $addonRam, $addonDisk) {
                 $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
@@ -208,6 +208,17 @@ class StoreController extends Controller
     private function calcAddonPrice(int $months, int $addonCpu, int $addonRam, int $addonDisk): int
     {
         $prices = config('cloudsunny.addon_prices', []);
+        $monthly = 0;
+        $monthly += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);
+        $monthly += $addonRam * (int) ($prices['ram_monthly'] ?? 0);
+        $monthly += (int) ($addonDisk / 10) * (int) ($prices['disk_10gb_monthly'] ?? 0);
+
+        return max(0, $monthly * max(1, $months));
+    }
+
+    private function calcAddonProviderCost(int $months, int $addonCpu, int $addonRam, int $addonDisk): int
+    {
+        $prices = config('cloudsunny.provider_addon_prices', config('cloudsunny.addon_prices', []));
         $monthly = 0;
         $monthly += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);
         $monthly += $addonRam * (int) ($prices['ram_monthly'] ?? 0);
