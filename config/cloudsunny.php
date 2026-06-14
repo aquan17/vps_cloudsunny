@@ -28,11 +28,11 @@ return [
     // -----------------------------------------------------------------------
     'billing_cycles' => [
         'monthly' => ['months' => 1, 'label' => '1 Tháng', 'discount_percent' => 0],
-        'quarterly' => ['months' => 3, 'label' => '3 Tháng', 'discount_percent' => 5],
-        'semi_annually' => ['months' => 6, 'label' => '6 Tháng', 'discount_percent' => 10],
-        'annually' => ['months' => 12, 'label' => '1 Năm', 'discount_percent' => 15],
-        'biennially' => ['months' => 24, 'label' => '2 Năm', 'discount_percent' => 25],
-        'triennially' => ['months' => 36, 'label' => '3 Năm', 'discount_percent' => 30],
+        'quarterly' => ['months' => 3, 'label' => '3 Tháng', 'discount_percent' => 0],
+        'semi_annually' => ['months' => 6, 'label' => '6 Tháng', 'discount_percent' => 5],
+        'annually' => ['months' => 12, 'label' => '1 Năm', 'discount_percent' => 10],
+        'biennially' => ['months' => 24, 'label' => '2 Năm', 'discount_percent' => 15],
+        'triennially' => ['months' => 36, 'label' => '3 Năm', 'discount_percent' => 20],
     ],
 
     'plans' => [
