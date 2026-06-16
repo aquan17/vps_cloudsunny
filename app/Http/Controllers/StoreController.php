@@ -107,7 +107,7 @@ class StoreController extends Controller
 
                 $lockedUser->decrement('balance', $totalPrice);
 
-                return VpsInstance::create([
+                $vps = VpsInstance::create([
                     'user_id' => $lockedUser->id,
                     'cloudsunny_account_id' => $account->id,
                     'label' => $validated['label'],
