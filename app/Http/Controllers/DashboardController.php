@@ -227,13 +227,22 @@ class DashboardController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($user, $amount) {
+            DB::transaction(function () use ($user, $amount, $vps, $providerCost, $billingCycle) {
                 $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
                 if ($lockedUser->balance < $amount) {
                     throw new \RuntimeException('INSUFFICIENT_BALANCE');
                 }
 
                 $lockedUser->decrement('balance', $amount);
+
+                \App\Models\Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'vps_instance_id' => $vps->id,
+                    'type' => 'renew',
+                    'amount' => $amount,
+                    'provider_cost' => $providerCost,
+                    'description' => "Gia hạn VPS: {$vps->label} ({$billingCycle})",
+                ]);
             });
 
             $api->forAccount($vps->cloudSunnyAccount)->renewVps((int) $vps->provider_vps_id, $billingCycle);
@@ -296,13 +305,22 @@ class DashboardController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($user, $amount) {
+            DB::transaction(function () use ($user, $amount, $vps, $providerCost) {
                 $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
                 if ($lockedUser->balance < $amount) {
                     throw new \RuntimeException('INSUFFICIENT_BALANCE');
                 }
 
                 $lockedUser->decrement('balance', $amount);
+
+                \App\Models\Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'vps_instance_id' => $vps->id,
+                    'type' => 'upgrade',
+                    'amount' => $amount,
+                    'provider_cost' => $providerCost,
+                    'description' => "Nâng cấp VPS: {$vps->label}",
+                ]);
             });
 
             $api->forAccount($vps->cloudSunnyAccount)->upgradeVps((int) $vps->provider_vps_id, $addonCpu, $addonRam, $addonDisk);

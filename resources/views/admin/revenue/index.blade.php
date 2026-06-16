@@ -60,49 +60,55 @@
         <table class="w-full text-left min-w-[1000px]">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200">
-                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">VPS</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Giao dịch</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Khách hàng</th>
-                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Account cấp</th>
-                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Doanh thu (Bán)</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Ngày giờ</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Doanh thu</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Chi phí (Gốc)</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Lợi nhuận</th>
-                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Biên lãi</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Thao tác</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-                @forelse($instances as $vps)
+                @forelse($transactions as $txn)
                     <tr class="hover:bg-gray-50/50">
                         <td class="px-6 py-4">
-                            <div class="font-bold text-gray-900 text-sm">{{ $vps->label }}</div>
-                            <div class="text-xs text-gray-500">{{ $vps->public_ip ?: 'Chưa có IP' }}</div>
-                            <div class="text-[11px] text-gray-400 mt-0.5">{{ $vps->status }}</div>
+                            <div class="font-bold text-gray-900 text-sm">
+                                @if($txn->type === 'buy') <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-green-100 text-green-700">MUA MỚI</span>
+                                @elseif($txn->type === 'renew') <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 text-blue-700">GIA HẠN</span>
+                                @elseif($txn->type === 'upgrade') <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-purple-100 text-purple-700">NÂNG CẤP</span>
+                                @else <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-gray-100 text-gray-700">{{ strtoupper($txn->type) }}</span>
+                                @endif
+                            </div>
+                            <div class="text-xs text-gray-700 mt-1">{{ $txn->description }}</div>
+                            @if($txn->vps)
+                                <div class="text-[11px] text-gray-500 mt-0.5">VPS: {{ $txn->vps->label }}</div>
+                            @endif
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">{{ $vps->user->email ?? 'N/A' }}</div>
-                            <div class="text-[11px] text-gray-500">{{ $vps->created_at->format('d/m/Y') }}</div>
+                            <div class="text-sm text-gray-900">{{ $txn->user->email ?? 'N/A' }}</div>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-xs font-semibold text-gray-700">{{ $vps->cloudSunnyAccount->label ?? 'N/A' }}</div>
+                            <div class="text-xs text-gray-600">{{ $txn->created_at->format('d/m/Y H:i') }}</div>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <div class="font-mono font-bold text-blue-600 text-sm">{{ number_format($vps->paid_amount) }}</div>
+                            <div class="font-mono font-bold text-blue-600 text-sm">{{ number_format($txn->amount) }}</div>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <div class="font-mono font-bold text-red-600 text-sm">{{ number_format($vps->provider_cost) }}</div>
+                            <div class="font-mono font-bold text-red-600 text-sm">{{ number_format($txn->provider_cost) }}</div>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            @php $profit = $vps->paid_amount - $vps->provider_cost; @endphp
+                            @php $profit = $txn->amount - $txn->provider_cost; @endphp
                             <div class="font-mono font-bold text-sm {{ $profit > 0 ? 'text-green-600' : ($profit < 0 ? 'text-red-600' : 'text-gray-500') }}">
                                 {{ number_format($profit) }}
                             </div>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            @php 
-                                $margin = $vps->paid_amount > 0 ? round(($profit / $vps->paid_amount) * 100, 1) : 0;
-                            @endphp
-                            <span class="px-2 py-0.5 rounded text-[11px] font-bold {{ $margin > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
-                                {{ $margin }}%
-                            </span>
+                            <form action="{{ route('admin.revenue.destroy', $txn) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa giao dịch này? (Sẽ trừ khỏi báo cáo doanh thu)');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-semibold">Xóa</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -113,9 +119,9 @@
             </tbody>
         </table>
     </div>
-    @if($instances->hasPages())
+    @if($transactions->hasPages())
         <div class="px-6 py-4 border-t border-gray-200">
-            {{ $instances->links() }}
+            {{ $transactions->links() }}
         </div>
     @endif
 </div>

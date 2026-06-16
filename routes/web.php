@@ -102,4 +102,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Revenue
     Route::get('/revenue',                         [\App\Http\Controllers\Admin\RevenueController::class, 'index'])->name('revenue.index');
+    Route::delete('/revenue/{transaction}',        [\App\Http\Controllers\Admin\RevenueController::class, 'destroy'])->name('revenue.destroy');
 });

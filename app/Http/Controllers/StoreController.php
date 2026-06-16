@@ -126,6 +126,17 @@ class StoreController extends Controller
                     'paid_amount' => $totalPrice,
                     'expires_at' => $expiresAt,
                 ]);
+
+                \App\Models\Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'vps_instance_id' => $vps->id,
+                    'type' => 'buy',
+                    'amount' => $totalPrice,
+                    'provider_cost' => $providerCost,
+                    'description' => "Mua mới VPS: {$validated['label']} ({$billingCycle})",
+                ]);
+
+                return $vps;
             });
         } catch (\RuntimeException $e) {
             if ($e->getMessage() === 'INSUFFICIENT_BALANCE') {
