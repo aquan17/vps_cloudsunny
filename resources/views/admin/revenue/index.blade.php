@@ -107,7 +107,7 @@
                             <form action="{{ route('admin.revenue.destroy', $txn) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa giao dịch này? (Sẽ trừ khỏi báo cáo doanh thu)');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 text-xs font-semibold">Xóa</button>
+                                <button type="submit" class="bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 px-3 py-1.5 rounded-md text-xs font-bold transition-colors border border-red-100">Xóa</button>
                             </form>
                         </td>
                     </tr>
