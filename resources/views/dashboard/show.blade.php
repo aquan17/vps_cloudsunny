@@ -136,7 +136,7 @@
                         @if($isWindows) Mật khẩu Administrator @else Mật khẩu Root @endif
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
                     </label>
-                    <div class="bg-[#1f2937] border border-gray-700 rounded-md p-3 flex justify-between items-center group cursor-pointer"
+                    <div id="pass-copy-wrap" class="bg-[#1f2937] border border-gray-700 rounded-md p-3 flex justify-between items-center group cursor-pointer"
                          onmouseenter="document.getElementById('root-pass').style.filter='none'; document.getElementById('pass-hint').style.display='none'"
                          onmouseleave="document.getElementById('root-pass').style.filter='blur(5px)'; document.getElementById('pass-hint').style.display='block'">
                         <div class="relative flex-1 flex items-center min-h-[20px]">
@@ -145,7 +145,7 @@
                                 <span class="bg-[#111827] px-2 py-0.5 rounded text-xs text-gray-400 font-medium">Di chuột để xem</span>
                             </span>
                         </div>
-                        <button onclick="copyText('{{ $vps->root_password }}', this)" class="text-gray-500 hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button id="pass-copy-btn" onclick="copyText('{{ $vps->root_password }}', this)" class="text-gray-500 hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                         </button>
                     </div>
@@ -433,6 +433,19 @@ function copyText(text, btn) {
             const ssh = document.getElementById('ssh-cmd');
             const isWindows = @json($isWindows);
             if (ssh) ssh.textContent = isWindows ? 'Administrator' : 'ssh root@' + data.public_ip;
+        }
+
+        // Cập nhật password ngay khi polling nhận được, không cần reload trang
+        if (data.root_password) {
+            const passEl = document.getElementById('root-pass');
+            if (passEl && (!passEl.textContent || passEl.textContent.trim() === '')) {
+                passEl.textContent = data.root_password;
+                // Cập nhật nút copy với password mới
+                const copyBtn = document.getElementById('pass-copy-btn');
+                if (copyBtn) {
+                    copyBtn.setAttribute('onclick', `copyText(${JSON.stringify(data.root_password)}, this)`);
+                }
+            }
         }
     }
 

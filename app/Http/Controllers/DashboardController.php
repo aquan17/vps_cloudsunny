@@ -106,6 +106,8 @@ class DashboardController extends Controller
                 'status' => $vps->status,
                 'raw_status' => $remote['status'] ?? null,
                 'public_ip' => $vps->public_ip,
+                'login_username' => $vps->login_username,
+                'root_password' => $vps->root_password ? (string) $vps->root_password : null,
                 'ready' => $this->isReadyStatus($vps->status),
             ]);
         } catch (\Throwable $e) {
