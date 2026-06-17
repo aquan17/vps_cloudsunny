@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProxyInstance;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\CloudSunnyApiService;
+use App\Services\CloudSunnyProxyPricingService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,16 +90,14 @@ class ProxyController extends Controller
         }
     }
 
-    public function renew(Request $request, ProxyInstance $proxy, CloudSunnyApiService $api)
+    public function renew(Request $request, ProxyInstance $proxy, CloudSunnyApiService $api, CloudSunnyProxyPricingService $pricing)
     {
         if ($proxy->user_id !== Auth::id()) {
             abort(403);
         }
 
-        $cycles = array_keys(config('cloudsunny.billing_cycles', []));
-
         $validated = $request->validate([
-            'billing_cycle' => 'required|in:' . implode(',', $cycles),
+            'billing_cycle' => 'required|in:monthly',
         ]);
 
         if (!$proxy->provider_proxy_id || !$proxy->cloudSunnyAccount) {
@@ -114,7 +114,8 @@ class ProxyController extends Controller
                 return back()->with('error', 'Không tìm thấy gói Proxy để tính giá gia hạn.');
             }
 
-            $pricePerCycle = $product['data_pricing'][$validated['billing_cycle']] ?? 0;
+            $pricePerCycle = $pricing->priceFor($product, $validated['billing_cycle']);
+            $providerCost = $pricing->providerCostFor($product, $validated['billing_cycle']);
             
             if ($pricePerCycle <= 0) {
                  return back()->with('error', 'Chu kỳ thanh toán không được hỗ trợ.');
@@ -132,12 +133,20 @@ class ProxyController extends Controller
         $monthsMeta = config('cloudsunny.billing_cycles.'.$validated['billing_cycle'].'.months', 1);
 
         try {
-            DB::transaction(function () use ($user, $pricePerCycle) {
+            DB::transaction(function () use ($user, $proxy, $pricePerCycle, $providerCost, $validated) {
                 $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
                 if ($lockedUser->balance < $pricePerCycle) {
                     throw new \RuntimeException('INSUFFICIENT_BALANCE');
                 }
                 $lockedUser->decrement('balance', $pricePerCycle);
+
+                Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'type' => 'renew',
+                    'amount' => $pricePerCycle,
+                    'provider_cost' => $providerCost,
+                    'description' => 'Gia han Proxy #' . $proxy->id . ' (' . $validated['billing_cycle'] . ')',
+                ]);
             });
         } catch (\RuntimeException $e) {
             return back()->with('error', 'Số dư không đủ.');

@@ -49,7 +49,7 @@
 
 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
     <div class="px-6 py-5 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
-        <h2 class="text-base font-bold text-gray-900">Chi tiết từng giao dịch VPS</h2>
+        <h2 class="text-base font-bold text-gray-900">Chi tiết từng giao dịch dịch vụ</h2>
         <form method="GET" action="{{ route('admin.revenue.index') }}" class="flex gap-2">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Tìm tên, IP, Email..." class="px-3 py-1.5 border border-gray-300 rounded-md text-sm">
             <button type="submit" class="px-3 py-1.5 bg-gray-900 text-white rounded-md text-sm font-semibold">Tìm</button>

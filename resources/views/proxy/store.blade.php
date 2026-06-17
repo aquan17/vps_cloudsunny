@@ -52,27 +52,35 @@
                 <p class="text-sm text-gray-500">Tài khoản CloudSunny hiện tại chưa cấu hình bán các gói Proxy. Vui lòng liên hệ Admin hoặc cấu hình trên hệ thống nhà cung cấp.</p>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
                 @foreach($products as $product)
-                <label class="cursor-pointer group relative">
+                @php
+                    $categoryId = $product['category_id'] ?? null;
+                    $categoryTitle = $categoryId !== null ? ($categories[$categoryId] ?? null) : null;
+                    $categoryTitle = $categoryTitle ?? (str_contains(strtolower($product['title'] ?? ''), 'share') ? 'Share' : 'Private');
+                    $bandwidth = (int) ($product['bandwidth'] ?? 0);
+                @endphp
+                <label class="cursor-pointer group relative h-full">
                     <input type="radio" name="product_id" value="{{ $product['id'] }}" class="peer sr-only" required
                            onchange="updatePrice()"
                            data-pricing="{{ json_encode($product['data_pricing'] ?? []) }}">
-                    <div class="flex flex-col p-4 border-2 rounded-xl transition-all peer-checked:border-cloud-600 peer-checked:bg-cloud-50 peer-checked:ring-1 peer-checked:ring-cloud-600 border-gray-200 bg-white group-hover:border-cloud-300">
-                        <div class="flex justify-between items-start mb-2">
+                    <div class="flex h-full min-h-[216px] flex-col p-4 border-2 rounded-xl transition-all peer-checked:border-cloud-600 peer-checked:bg-cloud-50 peer-checked:ring-1 peer-checked:ring-cloud-600 border-gray-200 bg-white group-hover:border-cloud-300">
+                        <div class="flex min-h-[48px] justify-between items-start mb-2">
                             <span class="text-base font-bold text-gray-900">{{ $product['title'] }}</span>
                         </div>
                         <div class="text-xl font-bold text-cloud-600 font-mono mb-3">
                             {{ number_format($product['data_pricing']['monthly'] ?? 0) }}đ<span class="text-xs text-gray-500 font-normal">/tháng</span>
                         </div>
-                        <ul class="text-sm text-gray-600 space-y-1.5 flex-1">
-                            <li class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                Loại: <span class="font-medium text-gray-900">{{ $categories[$product['category_id']] ?? 'Private' }}</span>
+                        <ul class="text-sm text-gray-600 space-y-2 flex-1">
+                            <li class="grid grid-cols-[1rem_4.5rem_1fr] items-start gap-2">
+                                <svg class="w-4 h-4 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Loại:</span>
+                                <span class="font-medium text-gray-900 leading-5">{{ $categoryTitle }}</span>
                             </li>
-                            <li class="flex items-center gap-2">
-                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                Băng thông: <span class="font-medium text-gray-900">{{ $product['bandwidth'] == 0 ? 'Không giới hạn' : $product['bandwidth'].' GB' }}</span>
+                            <li class="grid grid-cols-[1rem_4.5rem_1fr] items-start gap-2">
+                                <svg class="w-4 h-4 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Băng thông:</span>
+                                <span class="font-medium text-gray-900 leading-5">{{ $bandwidth === 0 ? 'Không giới hạn' : $bandwidth.' GB' }}</span>
                             </li>
                         </ul>
                     </div>
@@ -92,15 +100,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Chu kỳ thanh toán</label>
-                <div class="relative">
-                    <select name="billing_cycle" id="billing_cycle" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm font-medium transition-colors" onchange="updatePrice()">
-                        @foreach($billingCycles as $key => $cycle)
-                            <option value="{{ $key }}">{{ $cycle['label'] }}</option>
-                        @endforeach
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </div>
+                <input type="hidden" name="billing_cycle" id="billing_cycle" value="monthly">
+                <div class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-sm font-medium text-gray-900">
+                    {{ $billingCycles['monthly']['label'] ?? '1 Tháng' }}
                 </div>
             </div>
 

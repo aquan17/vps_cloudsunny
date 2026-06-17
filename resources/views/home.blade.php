@@ -295,10 +295,13 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     @foreach($proxyProducts as $pid => $p)
+                        @php
+                            $monthlyPrice = (int) ($p['price'] ?? ($p['data_pricing']['monthly'] ?? 0));
+                        @endphp
                         <div class="bg-white rounded-2xl p-8 flex flex-col border border-gray-200 shadow-sm hover:border-cloud-300 transition-colors">
                             <h3 class="text-xl font-bold text-gray-900">{{ $p['title'] }}</h3>
                             <div class="mt-4 mb-6 flex items-baseline text-gray-900">
-                                <span class="text-3xl font-extrabold tracking-tight">{{ number_format($p['price']) }}</span>
+                                <span class="text-3xl font-extrabold tracking-tight">{{ number_format($monthlyPrice) }}</span>
                                 <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
                             </div>
                             <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
@@ -315,7 +318,7 @@
                                     <span class="font-medium">IP tĩnh chất lượng cao</span>
                                 </li>
                             </ul>
-                            <a href="{{ auth()->check() ? route('proxy.store.create', $p['id']) : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50 transition-colors">
+                            <a href="{{ auth()->check() ? route('proxy.store.index') : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50 transition-colors">
                                 Mua Proxy này
                             </a>
                         </div>
