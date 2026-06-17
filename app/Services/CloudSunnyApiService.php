@@ -264,6 +264,12 @@ class CloudSunnyApiService
             ? $pending->withBody(json_encode($data), 'application/json')->get($this->url($path))
             : $pending->post($this->url($path), $data);
 
+        \Illuminate\Support\Facades\Log::info('API Response Payload', [
+            'url' => $this->url($path),
+            'status' => $response->status(),
+            'body' => $response->body(),
+        ]);
+
         if (in_array($response->status(), [401, 403]) && $this->account) {
             $this->authenticate($this->account);
             $pending = Http::withToken($this->token)
@@ -302,7 +308,14 @@ class CloudSunnyApiService
 
         if ($response->successful() && is_array($json)) {
             if (($json['error'] ?? 0) === 0) {
-                return $json['data'] ?? [];
+                $data = $json['data'] ?? [];
+                
+                // SeaServer proxy API sometimes returns error: 0 but puts error: true inside data
+                if (is_array($data) && isset($data['error']) && $data['error'] === true) {
+                    throw new RuntimeException($data['message'] ?? $data['msg'] ?? 'SeaServer API returned a nested error.');
+                }
+                
+                return $data;
             }
 
             throw new RuntimeException($json['message'] ?? $json['msg'] ?? 'SeaServer API returned an error.');
