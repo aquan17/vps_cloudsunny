@@ -127,7 +127,7 @@ class CloudSunnyApiService
 
     public function getVps(int $id): array
     {
-        return $this->extractVps($this->get('/agency/chi-tiet-vps', ['id' => $id]));
+        return $this->extractInstance($this->get('/agency/chi-tiet-vps', ['id' => $id]));
     }
 
     public function actionVps(array $ids, string $action, array $extra = []): array
@@ -191,7 +191,19 @@ class CloudSunnyApiService
 
     public function createProxy(array $data): array
     {
-        return $this->post('/agency/tao-moi-don-hang-proxy', $data);
+        $response = $this->post('/agency/tao-moi-don-hang-proxy', $data);
+        
+        if (isset($response['proxy']) && is_array($response['proxy'])) {
+            return isset($response['proxy']['id']) ? [$response['proxy']] : $response['proxy'];
+        }
+        if (isset($response['proxies']) && is_array($response['proxies'])) {
+            return isset($response['proxies']['id']) ? [$response['proxies']] : $response['proxies'];
+        }
+        if (isset($response['items']) && is_array($response['items'])) {
+            return isset($response['items']['id']) ? [$response['items']] : $response['items'];
+        }
+        
+        return isset($response['id']) ? [$response] : $response;
     }
 
     public function listProxies(): array
@@ -201,7 +213,7 @@ class CloudSunnyApiService
 
     public function getProxy(int $id): array
     {
-        return $this->get('/agency/chi-tiet-proxy', ['id' => $id]);
+        return $this->extractInstance($this->get('/agency/chi-tiet-proxy', ['id' => $id]));
     }
 
     public function actionProxy(array $ids, string $action, array $extra = []): array
@@ -304,11 +316,11 @@ class CloudSunnyApiService
         return rtrim(config('cloudsunny.api_base'), '/') . '/' . ltrim($path, '/');
     }
 
-    private function extractVps(array $data): array
+    private function extractInstance(array $data): array
     {
-        foreach (['vps', 'server', 'item', 'detail', 'data'] as $key) {
+        foreach (['vps', 'proxy', 'server', 'item', 'detail', 'data'] as $key) {
             if (isset($data[$key]) && is_array($data[$key])) {
-                return $this->extractVps($data[$key]);
+                return $this->extractInstance($data[$key]);
             }
         }
 
