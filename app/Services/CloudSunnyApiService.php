@@ -224,6 +224,11 @@ class CloudSunnyApiService
         ], $extra));
     }
 
+    public function deleteProxy(int $id): array
+    {
+        return $this->actionProxy([$id], 'delete');
+    }
+
 
     private function get(string $path, array $query = []): array
     {

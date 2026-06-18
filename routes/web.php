@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/proxy/{proxy}', [App\Http\Controllers\ProxyController::class, 'show'])->name('proxy.show');
     Route::get('/proxy/{proxy}/status', [App\Http\Controllers\ProxyController::class, 'statusJson'])->name('proxy.statusJson');
     Route::post('/proxy/{proxy}/renew', [App\Http\Controllers\ProxyController::class, 'renew'])->name('proxy.renew');
+    Route::delete('/proxy/{proxy}', [App\Http\Controllers\ProxyController::class, 'destroy'])->name('proxy.destroy');
 
     // Top-ups
     Route::get('/topup',                [TopupController::class, 'index'])->name('topup.index');

@@ -15,18 +15,6 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {{ session('error') }}
-        </div>
-    @endif
-
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -82,9 +70,18 @@
                             @endif
                         </td>
                         <td class="p-4">
+                            <div class="flex flex-wrap items-center gap-2">
                             <a href="{{ route('proxy.show', $instance->id) }}" class="inline-flex items-center justify-center bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-3 py-1.5 rounded text-sm font-medium transition-colors shadow-sm">
                                 Chi tiết
                             </a>
+                            <form action="{{ route('proxy.destroy', $instance->id) }}" method="POST" data-confirm="Xoá Proxy này? Hành động này không thể hoàn tác.">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex items-center justify-center bg-red-50 border border-red-200 text-red-700 hover:bg-red-100 px-3 py-1.5 rounded text-sm font-medium transition-colors shadow-sm">
+                                    Xoá
+                                </button>
+                            </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

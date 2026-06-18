@@ -172,6 +172,34 @@ class ProxyController extends Controller
         }
     }
 
+    public function destroy(ProxyInstance $proxy, CloudSunnyApiService $api)
+    {
+        if ($proxy->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        try {
+            if ($proxy->cloudSunnyAccount && $proxy->provider_proxy_id) {
+                $api->forAccount($proxy->cloudSunnyAccount)->deleteProxy((int) $proxy->provider_proxy_id);
+            }
+
+            DB::transaction(function () use ($proxy) {
+                $proxy->update(['status' => 'Đã xoá']);
+                $proxy->delete();
+            });
+
+            return redirect()->route('proxy.index')->with('success', 'Đã xoá Proxy trên hệ thống.');
+        } catch (\Throwable $e) {
+            Log::error('Proxy destroy failed', [
+                'id' => $proxy->id,
+                'provider_proxy_id' => $proxy->provider_proxy_id,
+                'msg' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Xoá Proxy thất bại: ' . $e->getMessage());
+        }
+    }
+
     private function syncRemoteProxy(ProxyInstance $proxy, array $remote): void
     {
         $expiresAt = $this->remoteProxyExpiresAt($remote);
