@@ -15,6 +15,7 @@ class ProxyInstance extends Model
         'provider_proxy_id',
         'provider_order_id',
         'product_id',
+        'type_proxy',
         'ip',
         'port',
         'username',
@@ -41,6 +42,6 @@ class ProxyInstance extends Model
 
     public function cloudSunnyAccount()
     {
-        return $this->belongsTo(CloudSunnyAccount::class);
+        return $this->belongsTo(CloudSunnyAccount::class, 'cloudsunny_account_id');
     }
 }

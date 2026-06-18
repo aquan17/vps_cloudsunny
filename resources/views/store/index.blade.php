@@ -50,6 +50,10 @@
     @endauth
 </div>
 
+<div class="mb-6 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-800">
+    <span class="font-semibold">Backup:</span> Hệ thống tự động migrate dữ liệu giữa các node, đảm bảo an toàn, không cần backup thủ công.
+</div>
+
 {{-- Plans Grid --}}
 <div class="mb-12">
     @include('partials.plans-grid', ['plans' => $plans, 'order' => true])

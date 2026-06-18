@@ -1,46 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto py-8">
-    <div class="mb-6 flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-3">
-                <h1 class="text-2xl font-bold text-gray-900">Chi tiết Proxy #{{ $proxy->id }}</h1>
-                @if(strtolower($proxy->status) == 'hoạt động')
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200" id="status-badge">
+<div class="w-full py-2">
+    <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">Chi tiết Proxy {{ $proxy->id }}</h1>
+                @if($proxy->status === 'Hoạt động')
+                    <span class="inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-200" id="status-badge">
                         <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                         Hoạt động
                     </span>
                 @else
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200" id="status-badge">
+                    <span class="inline-flex shrink-0 items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200" id="status-badge">
                         <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
                         <span id="status-text">{{ $proxy->status }}</span>
                     </span>
                 @endif
             </div>
-            <p class="text-sm text-gray-500 mt-1">Thông tin chi tiết và thao tác quản lý</p>
+            <p class="text-xs sm:text-sm text-gray-500 mt-1">Thông tin chi tiết và thao tác quản lý</p>
         </div>
-        <a href="{{ route('proxy.index') }}" class="text-cloud-600 hover:text-cloud-700 font-medium text-sm">
+        <a href="{{ route('proxy.index') }}" class="inline-flex w-fit items-center text-cloud-600 hover:text-cloud-700 font-medium text-sm">
             &larr; Quay lại danh sách
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
         
         {{-- THÔNG TIN KẾT NỐI --}}
-        <div class="md:col-span-2 space-y-6">
+        <div class="xl:col-span-3 space-y-6">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                     <h3 class="font-semibold text-gray-900 flex items-center gap-2">
@@ -61,52 +49,74 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
                             <div class="col-span-2">
                                 <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Địa chỉ IP</label>
-                                <div class="text-lg font-bold text-gray-900">{{ $proxy->ip }}</div>
+                                <div class="flex max-w-md">
+                                    <input type="text" readonly value="{{ $proxy->ip }}" class="w-full font-mono text-sm text-gray-900 bg-white px-3 py-2 border border-r-0 rounded-l">
+                                    <button type="button" class="px-3 py-2 bg-white border rounded-r text-gray-500 hover:text-gray-900 hover:bg-gray-50" data-copy-value="{{ $proxy->ip }}" title="Sao chép IP">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                             
-                            {{-- HTTP --}}
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                                <h4 class="font-semibold text-gray-700 mb-3 text-sm border-b pb-2">Giao thức HTTP</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Cổng (Port)</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->port ?? '-' }}</div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Username</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->username ?: 'Không yêu cầu' }}</div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Password</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->password ?: 'Không yêu cầu' }}</div>
-                                    </div>
-                                </div>
-                            </div>
+                            @php $typeProxy = strtoupper($proxy->type_proxy ?? 'HTTP'); @endphp
 
-                            {{-- SOCKS5 --}}
-                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                                <h4 class="font-semibold text-gray-700 mb-3 text-sm border-b pb-2">Giao thức SOCKS5</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Cổng (Port)</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_port ?? '-' }}</div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Username</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_username ?: 'Không yêu cầu' }}</div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs text-gray-500 mb-1">Password</label>
-                                        <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_password ?: 'Không yêu cầu' }}</div>
+                            @if($typeProxy === 'SOCKS5')
+                                <div class="col-span-2 bg-gray-50 rounded-lg p-4 border border-gray-100">
+                                    <h4 class="font-semibold text-gray-700 mb-3 text-sm border-b pb-2">Giao thức SOCKS5</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Cổng (Port)</label>
+                                            <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_port ?? '-' }}</div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Username</label>
+                                            <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_username ?: 'Không yêu cầu' }}</div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Password</label>
+                                            <div class="font-mono text-sm text-gray-900 bg-white px-2 py-1 border rounded">{{ $proxy->sock5_password ?: 'Không yêu cầu' }}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="col-span-2 bg-gray-50 rounded-lg p-4 border border-gray-100">
+                                    <h4 class="font-semibold text-gray-700 mb-3 text-sm border-b pb-2">Giao thức HTTP</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Cổng (Port)</label>
+                                            <div class="flex">
+                                                <input type="text" readonly value="{{ $proxy->port ?? '-' }}" class="w-full font-mono text-sm text-gray-900 bg-white px-2 py-1 border border-r-0 rounded-l">
+                                                <button type="button" class="px-2 py-1 bg-white border rounded-r text-gray-500 hover:text-gray-900 hover:bg-gray-50" data-copy-value="{{ $proxy->port ?? '' }}" title="Sao chép Port">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Username</label>
+                                            <div class="flex">
+                                                <input type="text" readonly value="{{ $proxy->username ?: 'Không yêu cầu' }}" class="w-full font-mono text-sm text-gray-900 bg-white px-2 py-1 border border-r-0 rounded-l">
+                                                <button type="button" class="px-2 py-1 bg-white border rounded-r text-gray-500 hover:text-gray-900 hover:bg-gray-50" data-copy-value="{{ $proxy->username ?? '' }}" title="Sao chép Username">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs text-gray-500 mb-1">Password</label>
+                                            <div class="flex">
+                                                <input type="text" readonly value="{{ $proxy->password ?: 'Không yêu cầu' }}" class="w-full font-mono text-sm text-gray-900 bg-white px-2 py-1 border border-r-0 rounded-l">
+                                                <button type="button" class="px-2 py-1 bg-white border rounded-r text-gray-500 hover:text-gray-900 hover:bg-gray-50" data-copy-value="{{ $proxy->password ?? '' }}" title="Sao chép Password">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     @endif
                 </div>
             </div>
             
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+            {{-- <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
                 <div class="flex">
                     <div class="flex-shrink-0">
                         <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
@@ -119,7 +129,7 @@
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 
@@ -135,7 +145,7 @@
                 <div class="p-6 space-y-4">
                     <div>
                         <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Mã sản phẩm</label>
-                        <div class="font-medium text-gray-900">#{{ $proxy->product_id }}</div>
+                        <div class="font-medium text-gray-900">{{ $proxy->product_id }}</div>
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Chu kỳ hiện tại</label>
@@ -152,13 +162,13 @@
 
                     <form action="{{ route('proxy.renew', $proxy->id) }}" method="POST" class="pt-2">
                         @csrf
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Gia hạn thêm:</label>
-                        <select name="billing_cycle" class="w-full rounded-md border-gray-300 shadow-sm focus:border-cloud-500 focus:ring-cloud-500 text-sm mb-3">
-                            @foreach($billingCycles as $key => $cycle)
-                                <option value="{{ $key }}" {{ $key == $proxy->billing_cycle ? 'selected' : '' }}>{{ $cycle['label'] }}</option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="w-full bg-cloud-600 hover:bg-cloud-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm" onclick="return confirm('Xác nhận thanh toán để gia hạn Proxy?');">
+                        <input type="hidden" name="billing_cycle" value="monthly">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gia hạn thêm</label>
+                        <div class="mb-3 flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm">
+                            <span class="font-medium text-gray-900">{{ $billingCycles['monthly']['label'] ?? '1 Tháng' }}</span>
+                            <span class="text-xs text-gray-500">Chu kỳ cố định</span>
+                        </div>
+                        <button type="submit" class="w-full bg-cloud-600 hover:bg-cloud-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm shadow-sm" onclick="return confirm('Xác nhận thanh toán để gia hạn Proxy?');">
                             Thanh toán gia hạn
                         </button>
                     </form>
@@ -183,5 +193,40 @@
     }, 5000);
 </script>
 @endif
+
+<script>
+    document.querySelectorAll('[data-copy-value]').forEach((button) => {
+        button.addEventListener('click', async () => {
+            const value = button.dataset.copyValue || '';
+            const original = button.innerHTML;
+
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(value);
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = value;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    textarea.remove();
+                }
+
+                button.innerHTML = '<svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                setTimeout(() => {
+                    button.innerHTML = original;
+                }, 1200);
+            } catch (error) {
+                console.error(error);
+                button.innerHTML = '<span class="text-xs text-red-600">Lỗi</span>';
+                setTimeout(() => {
+                    button.innerHTML = original;
+                }, 1200);
+            }
+        });
+    });
+</script>
 
 @endsection

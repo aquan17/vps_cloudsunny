@@ -39,6 +39,10 @@
     </div>
 </div>
 
+<div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-amber-800">
+    <span class="font-bold">Lưu ý:</span> VPS hết hạn sau 5 ngày sẽ bị xoá và không thể khôi phục dữ liệu.
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     
     {{-- Left Main Column --}}

@@ -124,9 +124,40 @@
             <strong>Lưu ý:</strong> Quý khách có thể để trống toàn bộ nếu không có nhu cầu tùy chỉnh. Hệ thống sẽ tự động gán Port kết nối ngẫu nhiên để tăng tính bảo mật, kèm theo Username/Password mặc định hoặc kích hoạt tính năng nhận diện IP gốc.
         </p>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-4">
-                <h3 class="font-semibold text-gray-900 pb-2 border-b">Giao thức HTTP</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div>
+            <label class="block text-sm font-bold text-gray-700 mb-2">Loại Proxy</label>
+            <div class="relative">
+                <select name="type_proxy" id="type_proxy" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-cloud-500 focus:border-cloud-500 text-sm font-medium transition-colors" onchange="toggleProxyAuthFields()">
+                    <option value="HTTP" {{ old('type_proxy', 'HTTP') === 'HTTP' ? 'selected' : '' }}>HTTP / HTTPS</option>
+                    <option value="SOCKS5" {{ old('type_proxy') === 'SOCKS5' ? 'selected' : '' }}>SOCKS5</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+            </div>
+            </div>
+
+        <div class="hidden">
+            <label class="cursor-pointer">
+                <input type="radio" value="HTTP" class="peer sr-only" disabled>
+                <div class="border-2 border-gray-200 peer-checked:border-cloud-600 peer-checked:bg-cloud-50 rounded-lg px-4 py-3 transition-colors">
+                    <div class="font-bold text-gray-900 text-sm">Dùng HTTP</div>
+                    <div class="text-xs text-gray-500 mt-1">Kết nối qua HTTP/HTTPS.</div>
+                </div>
+            </label>
+            <label class="cursor-pointer">
+                <input type="radio" value="SOCKS5" class="peer sr-only" disabled>
+                <div class="border-2 border-gray-200 peer-checked:border-cloud-600 peer-checked:bg-cloud-50 rounded-lg px-4 py-3 transition-colors">
+                    <div class="font-bold text-gray-900 text-sm">Dùng SOCKS5</div>
+                    <div class="text-xs text-gray-500 mt-1">Kết nối qua SOCKS5.</div>
+                </div>
+            </label>
+        </div>
+
+        <div class="contents">
+            <div class="contents" data-proxy-auth="HTTP">
+                <h3 class="hidden">Giao thức HTTP</h3>
                 <div>
                     <label class="block text-xs font-medium text-gray-600 mb-1">Username <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
                     <input type="text" name="http_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
@@ -137,8 +168,8 @@
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <h3 class="font-semibold text-gray-900 pb-2 border-b">Giao thức SOCKS5</h3>
+            <div class="contents hidden" data-proxy-auth="SOCKS5">
+                <h3 class="hidden">Giao thức SOCKS5</h3>
                 <div>
                     <label class="block text-xs font-medium text-gray-600 mb-1">Username <span class="text-gray-400 font-normal">(Tùy chọn)</span></label>
                     <input type="text" name="sock5_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
@@ -148,6 +179,7 @@
                     <input type="text" name="sock5_password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-cloud-500 focus:border-cloud-500 text-sm font-mono" placeholder="Để trống = Random">
                 </div>
             </div>
+        </div>
         </div>
     </section>
     </div>
@@ -225,6 +257,17 @@ function updatePrice() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', updatePrice);
+function toggleProxyAuthFields() {
+    const selectedType = document.getElementById('type_proxy').value;
+
+    document.querySelectorAll('[data-proxy-auth]').forEach((section) => {
+        section.classList.toggle('hidden', section.dataset.proxyAuth !== selectedType);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updatePrice();
+    toggleProxyAuthFields();
+});
 </script>
 @endsection

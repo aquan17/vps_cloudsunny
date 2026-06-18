@@ -51,6 +51,7 @@ class ProxyStoreController extends Controller
             'product_id' => 'required|integer',
             'billing_cycle' => 'required|in:monthly',
             'quantity' => 'required|integer|min:1|max:10',
+            'type_proxy' => 'required|in:HTTP,SOCKS5',
             'http_username' => 'nullable|string|max:64',
             'http_password' => 'nullable|string|max:64',
             'sock5_username' => 'nullable|string|max:64',
@@ -110,25 +111,18 @@ class ProxyStoreController extends Controller
                         'user_id' => $lockedUser->id,
                         'cloudsunny_account_id' => $account->id,
                         'product_id' => $validated['product_id'],
+                        'type_proxy' => $validated['type_proxy'],
                         'status' => 'Đang khởi tạo...',
                         'billing_cycle' => $validated['billing_cycle'],
                         'paid_amount' => $totalPrice / $validated['quantity'],
                         'expires_at' => $expiresAt,
-                        'username' => $validated['http_username'] ?? null,
-                        'password' => $validated['http_password'] ?? null,
-                        'sock5_username' => $validated['sock5_username'] ?? null,
-                        'sock5_password' => $validated['sock5_password'] ?? null,
+                        'username' => $validated['type_proxy'] === 'HTTP' ? ($validated['http_username'] ?? null) : null,
+                        'password' => $validated['type_proxy'] === 'HTTP' ? ($validated['http_password'] ?? null) : null,
+                        'sock5_username' => $validated['type_proxy'] === 'SOCKS5' ? ($validated['sock5_username'] ?? null) : null,
+                        'sock5_password' => $validated['type_proxy'] === 'SOCKS5' ? ($validated['sock5_password'] ?? null) : null,
                     ]);
                     $ids[] = $proxy->id;
                 }
-                Transaction::create([
-                    'user_id' => $lockedUser->id,
-                    'type' => 'buy',
-                    'amount' => $totalPrice,
-                    'provider_cost' => $totalProviderCost,
-                    'description' => 'Mua moi Proxy: ' . $productTitle . ' (' . $validated['billing_cycle'] . ') x' . $validated['quantity'],
-                ]);
-
                 return $ids;
             });
         } catch (\RuntimeException $e) {
@@ -139,17 +133,24 @@ class ProxyStoreController extends Controller
         }
 
         try {
-            $remoteList = $api->forAccount($account)->createProxy([
+            $typeProxy = $validated['type_proxy'];
+            $proxyUsername = $typeProxy === 'SOCKS5'
+                ? ($validated['sock5_username'] ?? '')
+                : ($validated['http_username'] ?? '');
+            $proxyPassword = $typeProxy === 'SOCKS5'
+                ? ($validated['sock5_password'] ?? '')
+                : ($validated['http_password'] ?? '');
+
+            $payload = [
                 'product_id' => (int) $validated['product_id'],
                 'billing_cycle' => $validated['billing_cycle'],
                 'quantity' => (int) $validated['quantity'],
-                'http_username' => $validated['http_username'] ?? '',
-                'http_password' => $validated['http_password'] ?? '',
-                'http_port' => '',
-                'sock5_username' => $validated['sock5_username'] ?? '',
-                'sock5_password' => $validated['sock5_password'] ?? '',
-                'sock5_port' => '',
-            ]);
+                'http_username' => $proxyUsername,
+                'http_password' => $proxyPassword,
+                'type_proxy' => $typeProxy,
+            ];
+
+            $remoteList = $api->forAccount($account)->createProxy($payload);
 
             // Normalize $remoteList to always be an array of proxies
             if (isset($remoteList['proxy']) && is_array($remoteList['proxy'])) {
@@ -165,6 +166,10 @@ class ProxyStoreController extends Controller
                 $remoteList = [$remoteList];
             }
 
+            if (!is_array($remoteList) || count($remoteList) < (int) $validated['quantity']) {
+                throw new \RuntimeException('CloudSunny did not return created proxy records. Response: ' . json_encode($remoteList, JSON_UNESCAPED_UNICODE));
+            }
+
             // Map remote proxies to local DB instances
             $instances = ProxyInstance::whereIn('id', $proxyIds)->orderBy('id')->get();
             
@@ -177,6 +182,14 @@ class ProxyStoreController extends Controller
                     ]);
                 }
             }
+
+            Transaction::create([
+                'user_id' => $user->id,
+                'type' => 'buy',
+                'amount' => $totalPrice,
+                'provider_cost' => $totalProviderCost,
+                'description' => 'Mua moi Proxy: ' . $productTitle . ' (' . $validated['billing_cycle'] . ') x' . $validated['quantity'],
+            ]);
 
             return redirect()->route('proxy.index')->with('success', 'Đã mua thành công ' . $validated['quantity'] . ' Proxy.');
 
