@@ -293,29 +293,37 @@
                     <p class="mt-2 text-sm text-gray-500">Các gói Proxy tĩnh và dân cư hiện đang được cập nhật trên SeaServer.</p>
                 </div>
             @else
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 max-w-7xl mx-auto">
                     @foreach($proxyProducts as $pid => $p)
                         @php
                             $monthlyPrice = (int) ($p['price'] ?? ($p['data_pricing']['monthly'] ?? 0));
                         @endphp
-                        <div class="bg-white rounded-2xl p-8 flex flex-col border border-gray-200 shadow-sm hover:border-cloud-300 transition-colors">
-                            <h3 class="text-xl font-bold text-gray-900">{{ $p['title'] }}</h3>
-                            <div class="mt-4 mb-6 flex items-baseline text-gray-900">
-                                <span class="text-3xl font-extrabold tracking-tight">{{ number_format($monthlyPrice) }}</span>
+                        <div class="bg-white rounded-2xl p-6 flex flex-col border border-gray-200 shadow-sm hover:border-cloud-300 transition-colors">
+                            <h3 class="text-lg font-bold text-gray-900 leading-snug min-h-[3.5rem]">{{ $p['title'] }}</h3>
+                            <div class="mt-3 mb-5 flex items-baseline text-gray-900">
+                                <span class="text-2xl font-extrabold tracking-tight">{{ number_format($monthlyPrice) }}</span>
                                 <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
                             </div>
-                            <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
-                                <li class="flex items-center gap-3">
-                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                    <span class="font-medium">HTTP / SOCKS5</span>
+                            <ul class="space-y-3 flex-grow mb-6 text-sm text-gray-700">
+                                <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM3.6 9h16.8M3.6 15h16.8M12 3c2.25 2.35 3.5 5.4 3.5 9s-1.25 6.65-3.5 9c-2.25-2.35-3.5-5.4-3.5-9S9.75 5.35 12 3z" /></svg>
+                                    <span><span class="block text-xs font-semibold uppercase text-gray-500">IP:</span><span class="font-bold text-gray-900">1 IP Share</span></span>
                                 </li>
-                                <li class="flex items-center gap-3">
-                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                    <span class="font-medium">Không giới hạn băng thông</span>
+                                <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5h5.25L10.5 5l3 14 2.25-5.5H21" /></svg>
+                                    <span><span class="block text-xs font-semibold uppercase text-gray-500">Băng Thông:</span><span class="font-bold text-gray-900">Không Giới Hạn</span></span>
                                 </li>
-                                <li class="flex items-center gap-3">
-                                    <svg class="text-green-500" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                    <span class="font-medium">IP tĩnh chất lượng cao</span>
+                                <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8m-8 4h5m6-8a3 3 0 013 3v8a3 3 0 01-3 3H5a3 3 0 01-3-3V8a3 3 0 013-3h14z" /></svg>
+                                    <span><span class="block text-xs font-semibold uppercase text-gray-500">Giao Thức:</span><span class="font-bold text-gray-900">HTTP/SOCKS5</span></span>
+                                </li>
+                                <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75l7.5 3.25v5.5c0 4.25-3.1 6.9-7.5 7.75-4.4-.85-7.5-3.5-7.5-7.75V7L12 3.75zM9.75 12.25l1.5 1.5 3.25-3.5" /></svg>
+                                    <span><span class="block text-xs font-semibold uppercase text-gray-500">Bảo Mật:</span><span class="font-bold text-gray-900">User/Pass</span></span>
+                                </li>
+                                <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 3L4 14h7l-1 7 10-12h-7l1-6z" /></svg>
+                                    <span><span class="block text-xs font-semibold uppercase text-gray-500">Tốc Độ:</span><span class="font-bold text-gray-900">Cao &amp; Ổn Định</span></span>
                                 </li>
                             </ul>
                             <a href="{{ auth()->check() ? route('proxy.store.index') : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50 transition-colors">

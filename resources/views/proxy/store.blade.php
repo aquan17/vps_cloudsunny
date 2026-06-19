@@ -52,35 +52,45 @@
                 <p class="text-sm text-gray-500">Tài khoản CloudSunny hiện tại chưa cấu hình bán các gói Proxy. Vui lòng liên hệ Admin hoặc cấu hình trên hệ thống nhà cung cấp.</p>
             </div>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
                 @foreach($products as $product)
                 @php
-                    $categoryId = $product['category_id'] ?? null;
-                    $categoryTitle = $categoryId !== null ? ($categories[$categoryId] ?? null) : null;
-                    $categoryTitle = $categoryTitle ?? (str_contains(strtolower($product['title'] ?? ''), 'share') ? 'Share' : 'Private');
-                    $bandwidth = (int) ($product['bandwidth'] ?? 0);
+                    $monthlyPrice = (int) ($product['data_pricing']['monthly'] ?? 0);
                 @endphp
                 <label class="cursor-pointer group relative h-full">
                     <input type="radio" name="product_id" value="{{ $product['id'] }}" class="peer sr-only" required
                            onchange="updatePrice()"
                            data-pricing="{{ json_encode($product['data_pricing'] ?? []) }}">
-                    <div class="flex h-full min-h-[216px] flex-col p-4 border-2 rounded-xl transition-all peer-checked:border-cloud-600 peer-checked:bg-cloud-50 peer-checked:ring-1 peer-checked:ring-cloud-600 border-gray-200 bg-white group-hover:border-cloud-300">
-                        <div class="flex min-h-[48px] justify-between items-start mb-2">
-                            <span class="text-base font-bold text-gray-900">{{ $product['title'] }}</span>
+                    <span class="absolute right-3 top-3 z-10 flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-white text-white transition-all peer-checked:border-cloud-600 peer-checked:bg-cloud-600">
+                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    </span>
+                    <div class="relative flex h-full min-h-[300px] flex-col p-5 border-2 rounded-xl transition-all peer-checked:border-cloud-600 peer-checked:bg-cloud-50 peer-checked:ring-1 peer-checked:ring-cloud-600 border-gray-200 bg-white group-hover:border-cloud-300">
+                        <div class="pr-7">
+                            <span class="block text-base font-bold leading-snug text-gray-900">{{ $product['title'] }}</span>
                         </div>
-                        <div class="text-xl font-bold text-cloud-600 font-mono mb-3">
-                            {{ number_format($product['data_pricing']['monthly'] ?? 0) }}đ<span class="text-xs text-gray-500 font-normal">/tháng</span>
+                        <div class="mt-3 text-xl font-bold text-cloud-600 font-mono">
+                            {{ number_format($monthlyPrice) }}đ<span class="text-xs text-gray-500 font-normal">/tháng</span>
                         </div>
-                        <ul class="text-sm text-gray-600 space-y-2 flex-1">
-                            <li class="grid grid-cols-[1rem_4.5rem_1fr] items-start gap-2">
-                                <svg class="w-4 h-4 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span>Loại:</span>
-                                <span class="font-medium text-gray-900 leading-5">{{ $categoryTitle }}</span>
+                        <ul class="mt-4 grid grid-cols-1 gap-2 text-sm text-gray-700">
+                            <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zM3.6 9h16.8M3.6 15h16.8M12 3c2.25 2.35 3.5 5.4 3.5 9s-1.25 6.65-3.5 9c-2.25-2.35-3.5-5.4-3.5-9S9.75 5.35 12 3z" /></svg>
+                                <span><span class="font-semibold text-gray-500">IP:</span> <span class="font-bold text-gray-900">1 IP Share</span></span>
                             </li>
-                            <li class="grid grid-cols-[1rem_4.5rem_1fr] items-start gap-2">
-                                <svg class="w-4 h-4 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                <span>Băng thông:</span>
-                                <span class="font-medium text-gray-900 leading-5">{{ $bandwidth === 0 ? 'Không giới hạn' : $bandwidth.' GB' }}</span>
+                            <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5h5.25L10.5 5l3 14 2.25-5.5H21" /></svg>
+                                <span><span class="font-semibold text-gray-500">Băng Thông:</span> <span class="font-bold text-gray-900">Không Giới Hạn</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8m-8 4h5m6-8a3 3 0 013 3v8a3 3 0 01-3 3H5a3 3 0 01-3-3V8a3 3 0 013-3h14z" /></svg>
+                                <span><span class="font-semibold text-gray-500">Giao Thức:</span> <span class="font-bold text-gray-900">HTTP/SOCKS5</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3.75l7.5 3.25v5.5c0 4.25-3.1 6.9-7.5 7.75-4.4-.85-7.5-3.5-7.5-7.75V7L12 3.75zM9.75 12.25l1.5 1.5 3.25-3.5" /></svg>
+                                <span><span class="font-semibold text-gray-500">Bảo Mật:</span> <span class="font-bold text-gray-900">User/Pass</span></span>
+                            </li>
+                            <li class="flex items-start gap-3 rounded-lg bg-gray-50 px-3 py-2">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-cloud-600" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 3L4 14h7l-1 7 10-12h-7l1-6z" /></svg>
+                                <span><span class="font-semibold text-gray-500">Tốc Độ:</span> <span class="font-bold text-gray-900">Cao &amp; Ổn Định</span></span>
                             </li>
                         </ul>
                     </div>
