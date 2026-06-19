@@ -44,4 +44,27 @@ class ProxyInstance extends Model
     {
         return $this->belongsTo(CloudSunnyAccount::class, 'cloudsunny_account_id');
     }
+
+    protected static function booted()
+    {
+        static::updated(function (ProxyInstance $proxy) {
+            if ($proxy->status === 'Hoạt động' && $proxy->ip) {
+                $cacheKey = "proxy_welcome_email_sent_{$proxy->id}";
+                
+                if (!\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($proxy->user->email)->queue(
+                            new \App\Mail\ProxyCreated($proxy)
+                        );
+                        \Illuminate\Support\Facades\Cache::forever($cacheKey, true);
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::error('Failed to send Proxy welcome email', [
+                            'proxy_id' => $proxy->id, 
+                            'msg' => $e->getMessage()
+                        ]);
+                    }
+                }
+            }
+        });
+    }
 }
