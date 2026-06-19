@@ -31,17 +31,17 @@ return [
         ],
         13 => [
             'name' => 'Proxy Datacenter Riêng',
-            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_13_MONTHLY', 29000),
+            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_13_MONTHLY', 35000),
             'provider_price_per_month' => (int) env('CLOUDSUNNY_PROVIDER_PROXY_13_MONTHLY', 22000),
         ],
         14 => [
             'name' => 'Proxy Dân Cư Dùng Chung',
-            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_14_MONTHLY', 18000),
+            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_14_MONTHLY', 20000),
             'provider_price_per_month' => (int) env('CLOUDSUNNY_PROVIDER_PROXY_14_MONTHLY', 11000),
         ],
         15 => [
             'name' => 'Proxy Dân Cư Riêng',
-            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_15_MONTHLY', 56000),
+            'price_per_month' => (int) env('CLOUDSUNNY_PROXY_15_MONTHLY', 65000),
             'provider_price_per_month' => (int) env('CLOUDSUNNY_PROVIDER_PROXY_15_MONTHLY', 49000),
         ],
     ],
