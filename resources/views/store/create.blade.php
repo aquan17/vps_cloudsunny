@@ -17,6 +17,10 @@
         return [$cycle => $svc->calculatePrice($plan, $cycle)];
     });
     $addonPrices = config('cloudsunny.addon_prices', []);
+    $networkSpeed = (int) ($plan['network_out_mbps'] ?? 100);
+    $networkSpeedLabel = $networkSpeed >= 1000
+        ? ($networkSpeed / 1000) . ' Gbps'
+        : $networkSpeed . ' Mbps';
 @endphp
 
 <div class="mb-8">
@@ -189,9 +193,22 @@
                 <div class="font-bold text-gray-900">{{ $plan['name'] }}</div>
                 <div class="text-xs text-gray-500 mt-1 mb-3">{{ $plan['desc'] }}</div>
                 <div class="flex flex-wrap gap-2">
-                    <span class="px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600"><span id="summaryCpu">{{ $plan['cores'] }}</span> vCPU</span>
-                    <span class="px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600"><span id="summaryRam">{{ $plan['ram'] }}</span> GB RAM</span>
-                    <span class="px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600"><span id="summaryDisk">{{ $plan['disk'] }}</span> GB SSD</span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">
+                        <svg class="text-cloud-500 flex-shrink-0" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2.25M15 3v2.25M9 18.75V21M15 18.75V21M3 9h2.25M3 15h2.25M18.75 9H21M18.75 15H21M7.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9A2.25 2.25 0 017.5 5.25z" /></svg>
+                        <span><span id="summaryCpu">{{ $plan['cores'] }}</span> vCPU</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">
+                        <svg class="text-cloud-500 flex-shrink-0" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 4.5h10.5A2.25 2.25 0 0119.5 6.75v10.5a2.25 2.25 0 01-2.25 2.25H6.75a2.25 2.25 0 01-2.25-2.25V6.75A2.25 2.25 0 016.75 4.5zM8.25 8.25h7.5v7.5h-7.5z" /></svg>
+                        <span><span id="summaryRam">{{ $plan['ram'] }}</span> GB RAM</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">
+                        <svg class="text-cloud-500 flex-shrink-0" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125S3.75 14.278 3.75 12" /></svg>
+                        <span><span id="summaryDisk">{{ $plan['disk'] }}</span> GB SSD</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">
+                        <svg class="text-cloud-500 flex-shrink-0" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>
+                        <span>Tốc độ mạng: {{ $networkSpeedLabel }}</span>
+                    </span>
                 </div>
             </div>
 
