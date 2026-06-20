@@ -12,6 +12,7 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'vps_instance_id',
+        'proxy_instance_id',
         'type',
         'amount',
         'provider_cost',
@@ -31,6 +32,11 @@ class Transaction extends Model
     public function vps()
     {
         return $this->belongsTo(VpsInstance::class, 'vps_instance_id');
+    }
+
+    public function proxy()
+    {
+        return $this->belongsTo(ProxyInstance::class, 'proxy_instance_id');
     }
 }
 

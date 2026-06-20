@@ -184,11 +184,12 @@ class ProxyStoreController extends Controller
             }
 
             Transaction::create([
-                'user_id' => $user->id,
-                'type' => 'buy',
-                'amount' => $totalPrice,
-                'provider_cost' => $totalProviderCost,
-                'description' => 'Mua moi Proxy: ' . $productTitle . ' (' . $validated['billing_cycle'] . ') x' . $validated['quantity'],
+                'user_id'           => $user->id,
+                'proxy_instance_id' => count($proxyIds) === 1 ? $proxyIds[0] : null,
+                'type'              => 'buy',
+                'amount'            => $totalPrice,
+                'provider_cost'     => $totalProviderCost,
+                'description'       => 'Mua mới Proxy: ' . $productTitle . ' (' . $validated['billing_cycle'] . ') x' . $validated['quantity'],
             ]);
 
             return redirect()->route('proxy.index')->with('success', 'Đã mua thành công ' . $validated['quantity'] . ' Proxy.');

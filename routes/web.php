@@ -75,6 +75,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Profile
     Route::get('/profile',              [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile/password',     [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Billing (lịch sử thanh toán)
+    Route::get('/billing',              [\App\Http\Controllers\BillingController::class, 'index'])->name('billing.index');
 });
 
 // Automated Payment Webhook

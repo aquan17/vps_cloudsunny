@@ -127,11 +127,12 @@ class ProxyController extends Controller
                 $lockedUser->decrement('balance', $pricePerCycle);
 
                 return Transaction::create([
-                    'user_id' => $lockedUser->id,
-                    'type' => 'renew',
-                    'amount' => $pricePerCycle,
-                    'provider_cost' => $providerCost,
-                    'description' => 'Gia han Proxy #' . $proxy->id . ' (' . $validated['billing_cycle'] . ')',
+                    'user_id'           => $lockedUser->id,
+                    'proxy_instance_id' => $proxy->id,
+                    'type'              => 'renew',
+                    'amount'            => $pricePerCycle,
+                    'provider_cost'     => $providerCost,
+                    'description'       => 'Gia hạn Proxy #' . $proxy->id . ' (' . $validated['billing_cycle'] . ')',
                 ]);
             });
         } catch (\RuntimeException $e) {

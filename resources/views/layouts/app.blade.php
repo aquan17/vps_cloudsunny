@@ -113,6 +113,13 @@
                 Nạp tiền & Thanh toán
             </a>
 
+            <a href="{{ route('billing.index') }}"
+               class="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors
+               {{ request()->routeIs('billing*') ? 'bg-cloud-50 text-cloud-700 border-l-2 border-cloud-600 -ml-3 pl-[14px]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Lịch sử thanh toán
+            </a>
+
             <a href="{{ route('profile.index') }}" 
                class="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors
                {{ request()->routeIs('profile*') ? 'bg-cloud-50 text-cloud-700 border-l-2 border-cloud-600 -ml-3 pl-[14px]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md' }}">
