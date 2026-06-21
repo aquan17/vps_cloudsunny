@@ -44,8 +44,10 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:120',
-            'email' => 'required|email|unique:users,email',
+            'email' => ['required', 'email', 'unique:users,email', 'regex:/@gmail\.com$/i'],
             'password' => 'required|min:8|confirmed',
+        ], [
+            'email.regex' => 'Vui lòng sử dụng địa chỉ email @gmail.com để đăng ký.',
         ]);
 
         $user = User::create([
