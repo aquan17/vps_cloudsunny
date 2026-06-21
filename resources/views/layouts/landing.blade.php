@@ -71,9 +71,11 @@
                 {{-- Right Nav --}}
                 <div class="flex items-center gap-4">
                     @guest
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Đăng nhập</a>
+                        <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-900 transition-colors">
+                            Đăng nhập
+                        </a>
                         <a href="{{ route('register') }}" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-cloud-600 rounded-md hover:bg-cloud-700 transition-colors shadow-sm">
-                            Khởi tạo VPS
+                            Đăng ký
                         </a>
                     @else
                         <a href="{{ route('dashboard') }}" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-cloud-600 rounded-md hover:bg-cloud-700 transition-colors shadow-sm">
