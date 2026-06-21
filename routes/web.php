@@ -78,6 +78,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Billing (lịch sử thanh toán)
     Route::get('/billing',              [\App\Http\Controllers\BillingController::class, 'index'])->name('billing.index');
+
+    // Support (Hỗ trợ)
+    Route::view('/support', 'support.index')->name('support.index');
 });
 
 // Automated Payment Webhook
