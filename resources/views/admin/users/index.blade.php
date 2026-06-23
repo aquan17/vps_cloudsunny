@@ -39,6 +39,7 @@
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Tên / Email</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Số dư</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">VPS</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Proxy</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Vai trò</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Ngày đăng ký</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Thao tác</th>
@@ -62,6 +63,11 @@
                 <td class="px-6 py-4 text-center">
                     <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
                         {{ $u->vps_instances_count }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold bg-cloud-50 text-cloud-700">
+                        {{ $u->proxy_instances_count }}
                     </span>
                 </td>
                 <td class="px-6 py-4">
@@ -91,7 +97,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                <td colspan="8" class="px-6 py-12 text-center text-gray-500">
                     <svg class="mx-auto h-12 w-12 text-gray-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
                     @if(request('search'))
                         <p class="text-gray-900 font-semibold mb-1">Không tìm thấy kết quả</p>
@@ -131,6 +137,7 @@
                 <div class="space-y-1">
                     <div class="text-xs text-gray-500">Số dư: <span class="font-bold font-mono text-sm {{ $u->balance > 0 ? 'text-cloud-600' : 'text-gray-900' }}">{{ number_format($u->balance) }} đ</span></div>
                     <div class="text-xs text-gray-500">VPS đang chạy: <span class="font-bold text-gray-900">{{ $u->vps_instances_count }}</span></div>
+                    <div class="text-xs text-gray-500">Proxy: <span class="font-bold text-gray-900">{{ $u->proxy_instances_count }}</span></div>
                     <div class="text-xs text-gray-500 font-mono">{{ $u->created_at->format('d/m/Y') }}</div>
                 </div>
                 <div class="flex items-center gap-2">

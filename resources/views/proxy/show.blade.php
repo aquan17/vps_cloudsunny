@@ -20,7 +20,7 @@
             </div>
             <p class="text-xs sm:text-sm text-gray-500 mt-1">Thông tin chi tiết và thao tác quản lý</p>
         </div>
-        <a href="{{ route('proxy.index') }}" class="inline-flex w-fit items-center text-cloud-600 hover:text-cloud-700 font-medium text-sm">
+        <a href="{{ auth()->user()->isAdmin() ? route('admin.proxies.index') : route('proxy.index') }}" class="inline-flex w-fit items-center text-cloud-600 hover:text-cloud-700 font-medium text-sm">
             &larr; Quay lại danh sách
         </a>
     </div>
@@ -160,6 +160,7 @@
                     
                     <hr class="border-gray-100">
 
+                    @if($proxy->user_id === auth()->id())
                     <form action="{{ route('proxy.renew', $proxy->id) }}" method="POST" class="pt-2">
                         @csrf
                         <input type="hidden" name="billing_cycle" value="monthly">
@@ -172,8 +173,9 @@
                             Thanh toán gia hạn
                         </button>
                     </form>
+                    @endif
 
-                    <form action="{{ route('proxy.destroy', $proxy->id) }}" method="POST" class="pt-2" data-confirm="Xoá Proxy này? Hành động này không thể hoàn tác.">
+                    <form action="{{ auth()->user()->isAdmin() ? route('admin.proxies.destroy', $proxy) : route('proxy.destroy', $proxy) }}" method="POST" class="pt-2" data-confirm="Xoá Proxy này? Hành động này không thể hoàn tác.">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 shadow-sm transition-colors hover:bg-red-100">

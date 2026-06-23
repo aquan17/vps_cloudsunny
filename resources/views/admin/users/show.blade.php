@@ -46,6 +46,10 @@
                     <span class="font-bold text-gray-900">{{ $user->vps_instances_count }}</span>
                 </div>
                 <div>
+                    <span class="block text-xs text-gray-500 mb-1">Proxy</span>
+                    <span class="font-bold text-gray-900">{{ $user->proxy_instances_count }}</span>
+                </div>
+                <div>
                     <span class="block text-xs text-gray-500 mb-1">Vai trò</span>
                     @if($user->is_admin)
                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Admin</span>
@@ -58,6 +62,41 @@
                     <span class="text-sm text-gray-900">{{ $user->created_at->format('d/m/Y H:i') }}</span>
                 </div>
             </div>
+        </div>
+
+        {{-- Proxy List --}}
+        <div id="proxies" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-200 bg-gray-50/50 flex items-center justify-between">
+                <h2 class="text-base font-bold text-gray-900">Proxy của người dùng</h2>
+                <span class="text-xs font-semibold text-gray-500">{{ $proxies->count() }} Proxy</span>
+            </div>
+            @if($proxies->isEmpty())
+                <div class="px-6 py-8 text-center text-sm text-gray-500">Người dùng này chưa có Proxy.</div>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[720px]">
+                        <thead><tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Proxy</th>
+                            <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Kết nối</th>
+                            <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Trạng thái</th>
+                            <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase">Hết hạn</th>
+                            <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase text-right">Node</th>
+                        </tr></thead>
+                        <tbody class="divide-y divide-gray-100">
+                            @foreach($proxies as $proxy)
+                                @php $proxyType = strtoupper($proxy->type_proxy ?? 'HTTP'); @endphp
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-6 py-4"><div class="font-bold text-sm text-gray-900">#{{ $proxy->id }} · {{ $proxyType }}</div><div class="text-xs text-gray-400">Provider #{{ $proxy->provider_proxy_id ?? '—' }}</div></td>
+                                    <td class="px-6 py-4 font-mono text-sm text-gray-700">{{ $proxy->ip ? $proxy->ip.':'.($proxyType === 'SOCKS5' ? ($proxy->sock5_port ?? '—') : ($proxy->port ?? '—')) : 'Đang chờ IP...' }}</td>
+                                    <td class="px-6 py-4"><span class="inline-flex px-2 py-0.5 rounded border text-xs font-semibold {{ $proxy->status === 'Hoạt động' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-yellow-50 text-yellow-700 border-yellow-200' }}">{{ $proxy->status }}</span></td>
+                                    <td class="px-6 py-4 text-sm {{ $proxy->expires_at && $proxy->expires_at->isPast() ? 'text-red-600 font-semibold' : 'text-gray-600' }}">{{ $proxy->expires_at ? $proxy->expires_at->format('d/m/Y H:i') : '—' }}</td>
+                                    <td class="px-6 py-4 text-right text-xs text-gray-500">{{ optional($proxy->cloudSunnyAccount)->label ?? '—' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
 
         {{-- Top up History --}}

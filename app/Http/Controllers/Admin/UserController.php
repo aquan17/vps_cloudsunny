@@ -14,7 +14,7 @@ class UserController extends Controller
     // ── Danh sách user ──────────────────────────────────────────────
     public function index(Request $request)
     {
-        $users = User::withCount('vpsInstances')
+        $users = User::withCount(['vpsInstances', 'proxyInstances'])
             ->when($request->search, fn($q) => $q->where('name', 'like', '%' . $request->search . '%')
                 ->orWhere('email', 'like', '%' . $request->search . '%'))
             ->orderByDesc('created_at')
@@ -27,13 +27,14 @@ class UserController extends Controller
     // ── Chi tiết 1 user ─────────────────────────────────────────────
     public function show(User $user)
     {
-        $user->loadCount('vpsInstances');
+        $user->loadCount(['vpsInstances', 'proxyInstances']);
+        $proxies = $user->proxyInstances()->with('cloudSunnyAccount')->latest()->get();
         $topups = TopupRequest::where('user_id', $user->id)
             ->orderByDesc('created_at')
             ->take(10)
             ->get();
 
-        return view('admin.users.show', compact('user', 'topups'));
+        return view('admin.users.show', compact('user', 'topups', 'proxies'));
     }
 
     // ── Điều chỉnh số dư ────────────────────────────────────────────
@@ -142,8 +143,8 @@ class UserController extends Controller
             return back()->with('error', 'Không thể tự xóa tài khoản của chính mình.');
         }
 
-        if ($user->vpsInstances()->count() > 0) {
-            return back()->with('error', 'Không thể xóa người dùng đang có VPS. Vui lòng yêu cầu người dùng xóa hết VPS trước.');
+        if ($user->vpsInstances()->exists() || $user->proxyInstances()->exists()) {
+            return back()->with('error', 'Không thể xóa người dùng đang có VPS hoặc Proxy. Vui lòng xóa hết dịch vụ trước.');
         }
 
         $user->delete();

@@ -24,7 +24,7 @@ class ProxyController extends Controller
 
     public function show(ProxyInstance $proxy, CloudSunnyApiService $api)
     {
-        if ($proxy->user_id !== Auth::id()) {
+        if ($proxy->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
             abort(403);
         }
 
@@ -53,7 +53,7 @@ class ProxyController extends Controller
 
     public function statusJson(ProxyInstance $proxy, CloudSunnyApiService $api)
     {
-        if ($proxy->user_id !== Auth::id()) {
+        if ($proxy->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
             abort(403);
         }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CloudSunnyAccountController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ProxyController as AdminProxyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -106,6 +107,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // All Instances
     Route::get('/instances',                       [\App\Http\Controllers\Admin\InstanceController::class, 'index'])->name('instances.index');
+    Route::get('/proxies',                         [AdminProxyController::class, 'index'])->name('proxies.index');
+    Route::delete('/proxies/{proxy}',              [AdminProxyController::class, 'destroy'])->name('proxies.destroy');
 
     // Revenue
     Route::get('/revenue',                         [\App\Http\Controllers\Admin\RevenueController::class, 'index'])->name('revenue.index');
