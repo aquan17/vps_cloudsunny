@@ -42,11 +42,24 @@ class DashboardController extends Controller
         $plan = $pricing->getPlan($vps->plan_id);
         $renewPrices = [];
         if ($plan) {
+            $addonCpu = max(0, $vps->cpu - $plan['cores']);
+            $addonRam = max(0, $vps->ram - $plan['ram']);
+            $addonDisk = max(0, $vps->disk - $plan['disk']);
+
+            $prices = config('cloudsunny.addon_prices', []);
+            $addonAmountPerMonth = 0;
+            $addonAmountPerMonth += $addonCpu * (int) ($prices['cpu_monthly'] ?? 0);
+            $addonAmountPerMonth += $addonRam * (int) ($prices['ram_monthly'] ?? 0);
+            $addonAmountPerMonth += (int) ($addonDisk / 10) * (int) ($prices['disk_10gb_monthly'] ?? 0);
+
             foreach (config('cloudsunny.billing_cycles', []) as $cycle => $meta) {
+                $months = $pricing->monthsForCycle($cycle);
+                $addonAmount = $addonAmountPerMonth * max(1, $months);
+
                 $renewPrices[$cycle] = [
                     'label' => $meta['label'],
                     'months' => $meta['months'],
-                    'price' => $pricing->calculatePrice($plan, $cycle),
+                    'price' => $pricing->calculatePrice($plan, $cycle) + $addonAmount,
                     'discount_percent' => $meta['discount_percent'] ?? 0,
                 ];
             }
