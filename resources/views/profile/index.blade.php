@@ -84,6 +84,20 @@
                 </div>
             </div>
         </div>
+
+        {{-- Affiliate Info Link --}}
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div class="px-6 py-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-gray-900">Chương trình Tiếp thị liên kết</h2>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cloud-100 text-cloud-700">Hoa hồng 5%</span>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-500 mb-4">Giới thiệu bạn bè đăng ký và nhận hoa hồng trọn đời.</p>
+                <a href="{{ route('affiliate.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-cloud-600 hover:bg-cloud-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cloud-500">
+                    Xem mã giới thiệu & Thu nhập
+                </a>
+            </div>
+        </div>
     </div>
 
     {{-- Right Col: Change Password --}}

@@ -50,11 +50,22 @@ class AuthController extends Controller
             'email.regex' => 'Vui lòng sử dụng địa chỉ email @gmail.com để đăng ký.',
         ]);
 
+        $referrerId = null;
+        if (\Illuminate\Support\Facades\Cookie::has('referral_code')) {
+            $refCode = \Illuminate\Support\Facades\Cookie::get('referral_code');
+            $referrer = User::where('ref_code', $refCode)->first();
+            if ($referrer) {
+                $referrerId = $referrer->id;
+            }
+        }
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'balance' => 0,
+            'ref_code' => strtoupper(\Illuminate\Support\Str::random(8)),
+            'referred_by' => $referrerId,
         ]);
 
         event(new Registered($user));

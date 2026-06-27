@@ -126,7 +126,7 @@ class ProxyController extends Controller
 
                 $lockedUser->decrement('balance', $pricePerCycle);
 
-                return Transaction::create([
+                $txn = Transaction::create([
                     'user_id'           => $lockedUser->id,
                     'proxy_instance_id' => $proxy->id,
                     'type'              => 'renew',
@@ -134,6 +134,10 @@ class ProxyController extends Controller
                     'provider_cost'     => $providerCost,
                     'description'       => 'Gia hạn Proxy #' . $proxy->id . ' (' . $validated['billing_cycle'] . ')',
                 ]);
+
+                app(\App\Services\AffiliateService::class)->processCommission($lockedUser, $pricePerCycle, 'renew_proxy');
+
+                return $txn;
             });
         } catch (\RuntimeException $e) {
             return back()->with('error', 'Số dư không đủ.');

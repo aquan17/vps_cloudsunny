@@ -126,7 +126,15 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                 Hồ sơ cá nhân
             </a>
+
+            <a href="{{ route('affiliate.index') }}" 
+               class="flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors
+               {{ request()->routeIs('affiliate*') ? 'bg-cloud-50 text-cloud-700 border-l-2 border-cloud-600 -ml-3 pl-[14px]' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-md' }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-70"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Affiliate
+            </a>
             @endauth
+
 
             @if(auth()->check() && auth()->user()->isAdmin())
             <div class="pt-4 mt-4 border-t border-gray-100">

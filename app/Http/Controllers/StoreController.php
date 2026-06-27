@@ -136,6 +136,8 @@ class StoreController extends Controller
                     'description' => "Mua mới VPS: {$validated['label']} ({$billingCycle})",
                 ]);
 
+                app(\App\Services\AffiliateService::class)->processCommission($lockedUser, $totalPrice, 'buy_vps');
+
                 return $vps;
             });
         } catch (\RuntimeException $e) {

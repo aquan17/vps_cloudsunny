@@ -258,6 +258,8 @@ class DashboardController extends Controller
                     'provider_cost' => $providerCost,
                     'description' => "Gia hạn VPS: {$vps->label} ({$billingCycle})",
                 ]);
+
+                app(\App\Services\AffiliateService::class)->processCommission($lockedUser, $amount, 'renew_vps');
             });
 
             $api->forAccount($vps->cloudSunnyAccount)->renewVps((int) $vps->provider_vps_id, $billingCycle);
@@ -336,6 +338,8 @@ class DashboardController extends Controller
                     'provider_cost' => $providerCost,
                     'description' => "Nâng cấp VPS: {$vps->label}",
                 ]);
+
+                app(\App\Services\AffiliateService::class)->processCommission($lockedUser, $amount, 'upgrade_vps');
             });
 
             $api->forAccount($vps->cloudSunnyAccount)->upgradeVps((int) $vps->provider_vps_id, $addonCpu, $addonRam, $addonDisk);

@@ -32,6 +32,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::get('/pricing', [StoreController::class, 'index'])->name('pricing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/affiliate', [App\Http\Controllers\AffiliateController::class, 'index'])->name('affiliate.index');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/vps/{vps}',          [DashboardController::class, 'show'])->name('dashboard.show');
     Route::get('/dashboard/vps/{vps}/status',   [DashboardController::class, 'statusJson'])->name('dashboard.status');
