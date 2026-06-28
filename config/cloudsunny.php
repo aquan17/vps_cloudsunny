@@ -18,9 +18,9 @@ return [
 
     // Chi phí gốc từ Provider (Để tính lợi nhuận). Nếu bỏ trống sẽ tự lấy bằng giá bán ở trên.
     'provider_addon_prices' => [
-        'cpu_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_CPU_MONTHLY', 18000),
-        'ram_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_RAM_MONTHLY', 18000),
-        'disk_10gb_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_DISK_10GB_MONTHLY', 6000),
+        'cpu_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_CPU_MONTHLY', 16200),
+        'ram_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_RAM_MONTHLY', 16200),
+        'disk_10gb_monthly' => (int) env('CLOUDSUNNY_PROVIDER_ADDON_DISK_10GB_MONTHLY', 5400),
     ],
 
     'proxy_plans' => [
