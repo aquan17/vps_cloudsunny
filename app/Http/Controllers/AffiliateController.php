@@ -23,8 +23,12 @@ class AffiliateController extends Controller
         $logs = AffiliateLog::where('user_id', $user->id)
             ->with('buyer')
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate(15, ['*'], 'logs_page');
 
-        return view('affiliate.index', compact('user', 'totalCommission', 'referralCount', 'logs'));
+        $referrals = $user->referrals()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10, ['*'], 'refs_page');
+
+        return view('affiliate.index', compact('user', 'totalCommission', 'referralCount', 'logs', 'referrals'));
     }
 }

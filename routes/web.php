@@ -83,6 +83,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Support (Hỗ trợ)
     Route::view('/support', 'support.index')->name('support.index');
+
+    // Notifications (Thông báo)
+    Route::view('/notifications', 'notifications.index')->name('notifications.index');
 });
 
 // Automated Payment Webhook
@@ -105,6 +108,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/balance',           [AdminUserController::class, 'adjustBalance'])->name('users.balance');
     Route::post('/users/{user}/toggle-admin',      [AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
     Route::delete('/users/{user}',                 [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // Affiliates (F1)
+    Route::get('/affiliates',                      [\App\Http\Controllers\Admin\AffiliateController::class, 'index'])->name('affiliates.index');
 
     // All Instances
     Route::get('/instances',                       [\App\Http\Controllers\Admin\InstanceController::class, 'index'])->name('instances.index');

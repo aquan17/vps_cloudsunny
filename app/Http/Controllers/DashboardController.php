@@ -402,13 +402,20 @@ class DashboardController extends Controller
 
         try {
             if ($vps->cloudSunnyAccount && $vps->provider_vps_id) {
-                // Call API to delete on the provider side
-                $api->forAccount($vps->cloudSunnyAccount)->deleteVps((int) $vps->provider_vps_id);
+                try {
+                    // Đổi thành tắt (shutdown) VPS bên provider thay vì gọi xóa
+                    $api->forAccount($vps->cloudSunnyAccount)->shutdownVps((int) $vps->provider_vps_id);
+                } catch (\Throwable $e) {
+                    Log::warning('Provider API shutdown failed, proceeding with local delete', [
+                        'id' => $vps->id,
+                        'msg' => $e->getMessage()
+                    ]);
+                }
             }
 
             DB::transaction(function () use ($vps) {
                 $vps->update(['status' => 'Đã xóa']);
-                $vps->delete();
+                $vps->delete(); // Laravel sẽ tự xử lý các khóa ngoại nếu đã cấu hình (VD: transactions sẽ được set null)
             });
 
             return redirect()->route('dashboard')->with('success', 'Đã xóa VPS trên hệ thống.');
