@@ -71,7 +71,7 @@
                     </span>
                 </td>
                 <td class="px-6 py-4">
-                    @if($u->is_admin)
+                    @if($u->isAdmin())
                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Admin</span>
                     @else
                         <span class="text-xs text-gray-500 font-medium">User</span>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="text-xs text-gray-500">{{ $u->email }}</div>
                 </div>
-                @if($u->is_admin)
+                @if($u->isAdmin())
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">Admin</span>
                 @else
                     <span class="text-xs text-gray-500 font-medium">User</span>

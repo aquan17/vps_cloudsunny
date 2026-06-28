@@ -33,6 +33,10 @@ Route::get('/pricing', [StoreController::class, 'index'])->name('pricing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/affiliate', [App\Http\Controllers\AffiliateController::class, 'index'])->name('affiliate.index');
+    
+    Route::get('/reseller-api', [App\Http\Controllers\ResellerApiController::class, 'index'])->name('reseller.api.index');
+    Route::post('/reseller-api/webhook', [App\Http\Controllers\ResellerApiController::class, 'updateWebhook'])->name('reseller.api.webhook');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/vps/{vps}',          [DashboardController::class, 'show'])->name('dashboard.show');
     Route::get('/dashboard/vps/{vps}/status',   [DashboardController::class, 'statusJson'])->name('dashboard.status');

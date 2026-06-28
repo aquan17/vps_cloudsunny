@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_admin',
         'ref_code',
         'referred_by',
+        'api_key',
     ];
 
     /**
@@ -45,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_admin' => 'boolean',
+        'is_admin' => 'integer',
     ];
 
     public function vpsInstances()
@@ -60,7 +61,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin(): bool
     {
-        return (bool) $this->is_admin;
+        return $this->is_admin === \App\Constants\UserRole::ADMIN;
+    }
+
+    public function isReseller(): bool
+    {
+        return $this->is_admin === \App\Constants\UserRole::RESELLER;
     }
 
     public function sendEmailVerificationNotification()
