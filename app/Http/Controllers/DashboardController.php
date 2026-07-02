@@ -384,11 +384,20 @@ class DashboardController extends Controller
         ]);
 
         try {
-            $api->forAccount($vps->cloudSunnyAccount)->rebuildVps((int) $vps->provider_vps_id, (int) $request->os_id);
+            $response = $api->forAccount($vps->cloudSunnyAccount)->rebuildVps((int) $vps->provider_vps_id, (int) $request->os_id);
             
-            $vps->update([
+            $serverInfo = $response[0] ?? $response;
+            
+            $updateData = [
                 'status' => 'Đang khởi động lại',
-            ]);
+            ];
+
+            // Đồng bộ mật khẩu mới nếu API gốc trả về sau khi Rebuild
+            if (!empty($serverInfo['password'])) {
+                $updateData['root_password'] = $serverInfo['password'];
+            }
+
+            $vps->update($updateData);
 
             return back()->with('success', 'Đã gửi yêu cầu Rebuild OS. VPS sẽ bị xóa hết dữ liệu và cài đặt lại!');
         } catch (\Throwable $e) {
