@@ -13,7 +13,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         
-        $activeVpsCount = $user->vpsInstances()->whereIn('status', ['running', 'provisioning'])->count();
+        $activeVpsCount = $user->vpsInstances->filter(fn($v) => $v->isActive())->count();
         $totalDeposited = TopupRequest::where('user_id', $user->id)->where('status', 'approved')->sum('amount');
         
         return view('profile.index', compact('user', 'activeVpsCount', 'totalDeposited'));
